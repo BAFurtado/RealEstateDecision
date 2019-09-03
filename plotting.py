@@ -14,8 +14,6 @@ if __name__ == '__main__':
     # Print schedule: principle and interest
     for index, payment in enumerate(m.monthly_payment_schedule()):
         print(payment)
-        if index == 10:
-            break
 
     # Amount paid first 10 years
     # Principal
