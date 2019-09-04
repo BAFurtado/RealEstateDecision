@@ -5,6 +5,7 @@ Authored by: Joel B. Mohler
 
 """
 import argparse
+from itertools import islice
 
 from numpy import pmt
 
@@ -53,8 +54,14 @@ class Mortgage:
     def annual_payment(self):
         return self.monthly_payment() * MONTHS_IN_YEAR
 
-    def total_payout(self):
-        return self.monthly_payment() * self.loan_months()
+    def total_payout(self, choice):
+        if choice == 'price':
+            return self.monthly_payment(choice) * self.loan_months()
+        else:
+            return sum(month[0] + month[1]
+                       for month in islice(self.monthly_payment_schedule('sac'),
+                                           self.loan_months()))
+
 
     def monthly_payment_schedule(self, choice='price'):
         monthly = self.monthly_payment(choice)

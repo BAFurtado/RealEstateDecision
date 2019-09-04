@@ -16,5 +16,5 @@ if __name__ == '__main__':
     # Principal
     print(sum(month[0] for month in islice(m.monthly_payment_schedule('sac'), 120)))
     # Interest
-    print(m.total_payout())
+    print(m.total_payout('sac'))
 
