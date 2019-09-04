@@ -1,8 +1,8 @@
-purchase_price = 450000
+purchase_price = 157000
 downpayment = 0
-interest_rate = .094
+interest_rate = .084
 amortization_years = 20
-amortization_months = None
+amortization_months = 50
 
 
 insurance_fee = .05443

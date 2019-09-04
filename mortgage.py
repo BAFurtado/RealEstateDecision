@@ -68,19 +68,21 @@ class Mortgage:
     def total_payout(self):
         return self.monthly_payment() * self.loan_months()
 
-    def monthly_payment_schedule(self):
-        monthly = self.monthly_payment()
-        balance = dollar(self.amount())
-        rate = decimal.Decimal(str(self.rate())).quantize(decimal.Decimal('.000001'))
+    def monthly_payment_schedule(self, choice='price'):
+        monthly = self.monthly_payment(choice)
+        balance = float(dollar(self.amount()))
         while True:
-            interest_unrounded = balance * rate * decimal.Decimal(1)/MONTHS_IN_YEAR
+            interest_unrounded = balance * float(self.monthly_rate())
             interest = dollar(interest_unrounded, round=decimal.ROUND_HALF_UP)
-            if monthly >= balance + interest:
+            if monthly >= balance + float(interest):
                 yield balance, interest
                 break
-            principle = monthly - interest
+            if choice == 'price':
+                principle = monthly - interest
+            if choice == 'sac':
+                principle = float(self.amount()) / self.loan_months()
             yield principle, interest
-            balance -= principle
+            balance -= (float(principle))
 
 
 def print_summary(m):
