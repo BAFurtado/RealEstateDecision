@@ -13,10 +13,11 @@ MONTHS_IN_YEAR = 12
 
 
 class Mortgage:
-    def __init__(self, interest, months, amount):
+    def __init__(self, interest, months, amount, choice='sac'):
         self._interest = interest
         self._months = months
         self._amount = amount
+        self._choice = choice.lower()
 
     def rate(self):
         return self._interest
@@ -39,44 +40,39 @@ class Mortgage:
     def amount(self):
         return self._amount
 
-    def monthly_payment(self, choice='price'):
+    def monthly_payment(self):
         interest = float(self.amount()) * self.monthly_rate()
-        if choice.lower() == 'price':
-            total = pmt(self.monthly_rate(), self.loan_months(), -float(self.amount()))
-            return total
+        if self._choice == 'price':
+            return pmt(self.monthly_rate(), self.loan_months(), -float(self.amount()))
         else:
-            amt = float(self.amount()) / self.loan_months()
-            return interest + amt
-
-    def total_value(self, m_payment):
-        return m_payment / self.rate() * MONTHS_IN_YEAR * (1 - (1 / self.month_growth()) ** self.loan_months())
+            amortization = float(self.amount()) / self.loan_months()
+            return interest + amortization
 
     def annual_payment(self):
         return self.monthly_payment() * MONTHS_IN_YEAR
 
-    def total_payout(self, choice):
-        if choice == 'price':
-            return self.monthly_payment(choice) * self.loan_months()
+    def total_payout(self):
+        if self._choice == 'price':
+            return self.monthly_payment() * self.loan_months()
         else:
             return sum(month[0] + month[1]
-                       for month in islice(self.monthly_payment_schedule('sac'),
-                                           self.loan_months()))
+                       for month in islice(self.monthly_payment_schedule(),
+                                           int(self.loan_months())))
 
-
-    def monthly_payment_schedule(self, choice='price'):
-        monthly = self.monthly_payment(choice)
+    def monthly_payment_schedule(self):
+        monthly = self.monthly_payment()
         balance = self.amount()
         while True:
             interest = balance * float(self.monthly_rate())
             if monthly >= balance + float(interest):
                 yield balance, interest
                 break
-            if choice == 'price':
+            if self._choice == 'price':
                 principle = monthly - interest
             else:
-                principle = float(self.amount()) / self.loan_months()
+                principle = self.amount() / self.loan_months()
             yield principle, interest
-            balance -= (float(principle))
+            balance -= principle
 
 
 def print_summary(m):

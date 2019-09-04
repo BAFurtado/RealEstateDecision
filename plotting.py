@@ -8,13 +8,12 @@ if __name__ == '__main__':
     m = Mortgage(p.interest_rate, p.amortization_months, p.loan_amount)
 
     # Print schedule: principle and interest
-    for index, payment in enumerate(m.monthly_payment_schedule('sac')):
+    for index, payment in enumerate(m.monthly_payment_schedule()):
         print('Princ. {:.2f}, int. {:.2f}, total: {:.2f}'.format(payment[0], payment[1],
                                                                  payment[0] + payment[1]))
 
     # Amount paid first 10 years
     # Principal
-    print(sum(month[0] for month in islice(m.monthly_payment_schedule('sac'), 120)))
-    # Interest
-    print(m.total_payout('sac'))
-
+    print(sum(month[0] for month in islice(m.monthly_payment_schedule(), 240)))
+    # Total payment
+    print(m.total_payout())
