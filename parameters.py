@@ -1,8 +1,9 @@
-purchase_price = 157565.05
+purchase_price = 450000
 downpayment = 0
-interest_rate = .0802
+interest_rate = .094
 amortization_years = 20
-amortization_months = 50
+amortization_months = None
+
 
 insurance_fee = .05443
 
@@ -18,3 +19,4 @@ if not amortization_months:
     amortization_months = amortization_years * 12
 
 loan_amount = purchase_price - downpayment
+

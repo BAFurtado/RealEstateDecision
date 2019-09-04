@@ -7,6 +7,8 @@ Authored by: Joel B. Mohler
 import argparse
 import decimal
 
+from numpy import pmt
+
 MONTHS_IN_YEAR = 12
 DOLLAR_QUANTIZE = decimal.Decimal('.01')
 
@@ -29,8 +31,11 @@ class Mortgage:
     def rate(self):
         return self._interest
 
+    def monthly_rate(self):
+        return (1 + self.rate()) ** (1 / MONTHS_IN_YEAR) - 1
+
     def month_growth(self):
-        return 1. + self._interest / MONTHS_IN_YEAR
+        return 1 + self._interest / MONTHS_IN_YEAR
 
     def apy(self):
         return self.month_growth() ** MONTHS_IN_YEAR - 1
@@ -44,9 +49,15 @@ class Mortgage:
     def amount(self):
         return self._amount
 
-    def monthly_payment(self):
-        pre_amt = float(self.amount()) * self.rate() / (float(MONTHS_IN_YEAR) * (1.-(1./self.month_growth()) ** self.loan_months()))
-        return dollar(pre_amt, round=decimal.ROUND_CEILING)
+    def monthly_payment(self, choice='price'):
+        interest = float(self.amount()) * self.monthly_rate()
+        if choice.lower() == 'price':
+            total = pmt(self.monthly_rate(), self.loan_months(), -float(self.amount()))
+            amt = total - interest
+            return dollar(total, round=decimal.ROUND_CEILING)
+        if choice.lower() == 'sac':
+            amt = float(self.amount()) / self.loan_months()
+            return dollar(interest + amt, round=decimal.ROUND_CEILING)
 
     def total_value(self, m_payment):
         return m_payment / self.rate() * (float(MONTHS_IN_YEAR) * (1.-(1./self.month_growth()) ** self.loan_months()))
@@ -86,10 +97,10 @@ def print_summary(m):
 
 def main():
     parser = argparse.ArgumentParser(description='Mortgage Amortization Tools')
-    parser.add_argument('-i', '--interest', default=6, dest='interest')
-    parser.add_argument('-y', '--loan-years', default=30, dest='years')
+    parser.add_argument('-i', '--interest', default=9.4, dest='interest')
+    parser.add_argument('-y', '--loan-years', default=20, dest='years')
     parser.add_argument('-m', '--loan-months', default=None, dest='months')
-    parser.add_argument('-a', '--amount', default=100000, dest='amount')
+    parser.add_argument('-a', '--amount', default=450000, dest='amount')
     args = parser.parse_args()
 
     if args.months:
