@@ -2,10 +2,13 @@
 The foundations of the code comes from:
 https://github.com/jbmohler/mortgage/blob/master/mortgage.py
 Authored by: Joel B. Mohler
+However, function have been changed to fit the Brazilian SAC and PRICE mortgage systems of amortization
+Bernardo A Furtado
 
 """
 import argparse
 from itertools import islice
+import datetime
 
 from numpy import pmt
 
@@ -43,7 +46,7 @@ class Mortgage:
     def monthly_payment(self):
         interest = float(self.amount()) * self.monthly_rate()
         if self._choice == 'price':
-            return pmt(self.monthly_rate(), self.loan_months(), -float(self.amount()))
+            return pmt(self.monthly_rate(), self.loan_months(), -self.amount())
         else:
             amortization = float(self.amount()) / self.loan_months()
             return interest + amortization
@@ -63,8 +66,8 @@ class Mortgage:
         monthly = self.monthly_payment()
         balance = self.amount()
         while True:
-            interest = balance * float(self.monthly_rate())
-            if monthly >= balance + float(interest):
+            interest = balance * self.monthly_rate()
+            if monthly >= balance + interest:
                 yield balance, interest
                 break
             if self._choice == 'price':

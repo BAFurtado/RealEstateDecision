@@ -1,11 +1,10 @@
-purchase_price = 98000
+purchase_price = 92000
 downpayment = 0
 interest_rate = .084
 amortization_years = 20
-amortization_months = 28
+amortization_months = 50
 
-mortgage_choice = 'price'
-insurance_fee = .05443
+mortgage_choice = 'sac'
 
 property_tax = 1
 appreciation = 3

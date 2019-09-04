@@ -4,7 +4,7 @@ import pandas as pd
 # MIP applies to balance
 # fee depends on ages and percentage of estate ownership
 
-# DIF applies to a fixed fee on total value of estate
+# DFI applies to a fixed fee on total value of estate
 
 # Data
 DFI = 7.8e-05
