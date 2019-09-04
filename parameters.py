@@ -4,7 +4,7 @@ interest_rate = .084
 amortization_years = 20
 amortization_months = 28
 
-mortgage_choice = 'sac'
+mortgage_choice = 'price'
 insurance_fee = .05443
 
 property_tax = 1
@@ -19,4 +19,4 @@ if not amortization_months:
     amortization_months = amortization_years * 12
 
 loan_amount = purchase_price - downpayment
-
+nominal_return_cash = return_on_cash - inflation
