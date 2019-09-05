@@ -1,11 +1,11 @@
 import datetime
 
 import pandas as pd
+from dateutil.relativedelta import relativedelta
 
 import insurance
 import parameters as p
 from mortgage import Mortgage
-from dateutil.relativedelta import relativedelta
 
 
 class Borrower:
@@ -38,6 +38,7 @@ class Contract:
             self.data.loc[i, 'balance'] = self.data.loc[i - 1, 'balance'] - self.data.loc[i, 'amortization']
         self.data.loc[:, 'dfi'] = round(self.dfi(), 2)
         self.mip()
+        self.data.loc[:, 'total'] = self.data.amortization + self.data.interest + self.data.dfi + self.data.mip
         self.data.to_csv('data.csv', sep=';', index=False)
 
     def dfi(self):
@@ -46,13 +47,11 @@ class Contract:
     def mip(self):
         keys = list(self.borrowers.keys())
         for i in range(len(self.data)):
-            self.data.loc[i, 'mip'] = insurance.mip(self.data.loc[i, 'balance'],
-                                                self.signature,
-                                                keys[0].birth,
-                                                self.signature + relativedelta(months=i),
-                                                keys[1].birth if keys[1] else None,
-                                                self.borrowers[keys[0]],
-                                                self.borrowers[keys[1]] if keys[1] else None)
+            self.data.loc[i, 'mip'] = round(insurance.mip(self.data.loc[i, 'balance'], self.signature,
+                                                          keys[0].birth, self.signature + relativedelta(months=i),
+                                                          keys[1].birth if keys[1] else None,
+                                                          self.borrowers[keys[0]],
+                                                          self.borrowers[keys[1]] if keys[1] else None), 2)
 
 
 if __name__ == '__main__':
@@ -65,8 +64,3 @@ if __name__ == '__main__':
     c.set_mortgage(p.interest_rate, p.amortization_months, p.loan_amount, p.mortgage_choice)
     c.gen_schedule()
     c.complete_schedule()
-    # cur_age = datetime.date(2019, 9, 4)
-    #
-    # m = mip(bal, contr, b1, datetime.date(2019, 9, 4), b2, p1, p2)
-    # d = dfi(original_value)
-    # print('MIP: {:,.2f}, DIF: {:,.2f} insurance: {:,.2f}'.format(m, d, m + d))

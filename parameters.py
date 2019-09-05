@@ -1,4 +1,4 @@
-purchase_price = 92000
+purchase_price = 157565
 downpayment = 0
 interest_rate = .084
 amortization_years = 20
