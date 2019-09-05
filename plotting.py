@@ -8,7 +8,7 @@ if __name__ == '__main__':
     m = Mortgage(p.interest_rate, p.amortization_months, p.loan_amount, p.mortgage_choice)
 
     # Print schedule: principle and interest
-    for payment in islice(m.monthly_payment_schedule(), 10):
+    for payment in m.monthly_payment_schedule():
         print('Princ. {:,.2f}, int. {:,.2f}, total: {:,.2f}'.format(payment[0], payment[1],
                                                                  payment[0] + payment[1]))
 

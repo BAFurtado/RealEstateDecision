@@ -30,10 +30,6 @@ def mip(balance, contract_date, birth1, current_date=None, birth2=None, pc1=1., 
            + balance * fee(birth2, contract_date, current_date) * pc2
 
 
-def dfi(value):
-    return value * DFI
-
-
 if __name__ == '__main__':
     original_value = 1038000
     bal = 157565.05

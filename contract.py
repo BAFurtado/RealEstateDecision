@@ -1,6 +1,11 @@
 import datetime
-from mortgage import Mortgage
+
+import pandas as pd
+
+import insurance
 import parameters as p
+from mortgage import Mortgage
+from dateutil.relativedelta import relativedelta
 
 
 class Borrower:
@@ -13,15 +18,41 @@ class Contract:
         self.signature = signature
         self.value = value
         self.borrowers = dict()
+        self.mortgage = None
+        self.data = pd.DataFrame()
 
     def set_borrowers(self, b, percentage):
         self.borrowers[b] = percentage
 
     def set_mortgage(self, interest, months, loan, choice):
-        self.mortage = Mortgage(interest, months, loan, choice)
+        self.mortgage = Mortgage(interest, months, loan, choice)
 
-    def output(self):
-        pass
+    def gen_schedule(self):
+        for i, payment in enumerate(self.mortgage.monthly_payment_schedule()):
+            self.data.loc[i, 'amortization'] = round(payment[0], 2)
+            self.data.loc[i, 'interest'] = round(payment[1], 2)
+
+    def complete_schedule(self):
+        self.data.loc[0, 'balance'] = p.loan_amount - self.data.loc[0, 'amortization']
+        for i in range(1, len(self.data)):
+            self.data.loc[i, 'balance'] = self.data.loc[i - 1, 'balance'] - self.data.loc[i, 'amortization']
+        self.data.loc[:, 'dfi'] = round(self.dfi(), 2)
+        self.mip()
+        self.data.to_csv('data.csv', sep=';', index=False)
+
+    def dfi(self):
+        return self.value * insurance.DFI
+
+    def mip(self):
+        keys = list(self.borrowers.keys())
+        for i in range(len(self.data)):
+            self.data.loc[i, 'mip'] = insurance.mip(self.data.loc[i, 'balance'],
+                                                self.signature,
+                                                keys[0].birth,
+                                                self.signature + relativedelta(months=i),
+                                                keys[1].birth if keys[1] else None,
+                                                self.borrowers[keys[0]],
+                                                self.borrowers[keys[1]] if keys[1] else None)
 
 
 if __name__ == '__main__':
@@ -32,7 +63,8 @@ if __name__ == '__main__':
     c.set_borrowers(b1, .8601)
     c.set_borrowers(b2, .1399)
     c.set_mortgage(p.interest_rate, p.amortization_months, p.loan_amount, p.mortgage_choice)
-
+    c.gen_schedule()
+    c.complete_schedule()
     # cur_age = datetime.date(2019, 9, 4)
     #
     # m = mip(bal, contr, b1, datetime.date(2019, 9, 4), b2, p1, p2)
