@@ -42,6 +42,3 @@ if __name__ == '__main__':
     p1 = .8601
     p2 = .1399
     m = mip(bal, contr, b1, datetime.date(2019, 9, 4), b2, p1, p2)
-    d = dfi(original_value)
-    print('MIP: {:,.2f}, DIF: {:,.2f} insurance: {:,.2f}'.format(m, d, m + d))
-
