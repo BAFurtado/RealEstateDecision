@@ -8,13 +8,8 @@ import parameters as p
 from mortgage import Mortgage, MONTHS_IN_YEAR
 
 
-def monthly_rate(self, rate):
+def monthly_rate(rate):
     return (1 + rate) ** (1 / MONTHS_IN_YEAR) - 1
-
-
-class Borrower:
-    def __init__(self, birth):
-        self.birth = birth
 
 
 class Comparison:
@@ -26,8 +21,26 @@ class Rental:
     def __init__(self, base):
         self.data = base.data
 
-    def access_data(self):
-        print(self.data.head())
+    def gen_rent(self, rent, months, inflation, period_adjustment):
+        for i in range(months):
+            self.data.loc[i, 'rent'] = round(rent, 2)
+            if (i % (period_adjustment - 1)) == 0 and i > 0:
+                rent *= (1 + inflation)
+        self.data.to_csv('data.csv', sep=';', index=False)
+
+    def cash_return(self, amount, months, rate):
+        for i in range(months):
+            if i == 0:
+                self.data.loc[0, 'cash'] = amount
+            else:
+                amount *= 1 + monthly_rate(rate)
+                self.data.loc[i, 'cash'] = amount
+        self.data.to_csv('data.csv', sep=';', index=False)
+
+
+class Borrower:
+    def __init__(self, birth):
+        self.birth = birth
 
 
 class Contract:
@@ -55,7 +68,8 @@ class Contract:
             self.data.loc[i, 'balance'] = self.data.loc[i - 1, 'balance'] - self.data.loc[i, 'amortization']
         self.data.loc[:, 'dfi'] = round(self.dfi(), 2)
         self.mip()
-        self.data.loc[:, 'total'] = self.data.amortization + self.data.interest + self.data.dfi + self.data.mip
+        self.data.loc[:, 'purchase_payment'] = self.data.amortization + self.data.interest \
+                                               + self.data.dfi + self.data.mip
         self.data.to_csv('data.csv', sep=';', index=False)
 
     def dfi(self):
@@ -84,4 +98,5 @@ if __name__ == '__main__':
     c.gen_schedule()
     c.complete_schedule()
     rental = Rental(d)
-    rental.access_data()
+    rental.gen_rent(p.rent, p.amortization_months, p.inflation, p.rent_raising_period)
+    rental.cash_return(p.downpayment, p.amortization_months, p.real_return)

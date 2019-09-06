@@ -67,8 +67,7 @@ class Mortgage:
         balance = self.amount()
         while True:
             interest = balance * self.monthly_rate()
-            if monthly >= balance + interest:
-                yield balance, interest
+            if balance <= 0:
                 break
             if self._choice == 'price':
                 principle = monthly - interest
