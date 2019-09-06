@@ -3,7 +3,7 @@ purchase_price = 933000
 downpayment = 483000
 loan_amount = purchase_price - downpayment
 interest_rate = .084
-amortization_years = 240
+amortization_years = 20
 amortization_months = None
 
 mortgage_choice = 'sac'
