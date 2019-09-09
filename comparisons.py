@@ -17,23 +17,32 @@ class Comparison:
         self.data = pd.DataFrame()
 
     def save(self):
-        self.data.to_csv('data.csv', sep=';', index=False)
+        self.data.to_csv(p.data, sep=';', index=False)
 
-    def investment_return(self, amount, months, rate, title='cash'):
+    def investment_return(self, amount, months, rate, title='rent_savings'):
         for i in range(months):
             if i == 0:
                 self.data.loc[0, title] = amount
             else:
+                if title == 'rent_savings':
+                    amount += self.save_rent_different(i)
+                    if i % 12 == 0:
+                        amount *= (1 - p.custody_fee)
                 amount *= 1 + monthly_rate(rate)
                 self.data.loc[i, title] = amount
         self.save()
 
+    def save_rent_different(self, j):
+        return self.data.loc[j, 'payment'] - self.data.loc[j, 'rent']
+
     def equity(self):
-        self.data.loc[:, 'equity'] = self.data.loc[:, 'appreciation'] - self.data.loc[:, 'balance']
+        self.data.loc[:, 'equity'] = self.data.loc[:, 'home_value'] - self.data.loc[:, 'balance']
+        self.selling()
         self.save()
 
-    def rent_savings(self):
-        pass
+    def selling(self):
+        self.data.loc[:, 'purchase_savings'] = self.data.loc[:, 'equity'] - \
+                                               self.data.loc[:, 'home_value'] * p.selling_cost
 
 
 class Rental:
@@ -45,7 +54,7 @@ class Rental:
             self.data.loc[i, 'rent'] = round(rent, 2)
             if (i % (period_adjustment - 1)) == 0 and i > 0:
                 rent *= (1 + inflation)
-        self.data.to_csv('data.csv', sep=';', index=False)
+        self.data.to_csv(p.data, sep=';', index=False)
 
 
 class Borrower:
@@ -80,7 +89,7 @@ class Contract:
         self.mip()
         self.data.loc[:, 'payment'] = self.data.amortization + self.data.interest \
                                                + self.data.dfi + self.data.mip
-        self.data.to_csv('data.csv', sep=';', index=False)
+        self.data.to_csv(p.data, sep=';', index=False)
 
     def dfi(self):
         return self.value * insurance.DFI
@@ -88,7 +97,7 @@ class Contract:
     def mip(self):
         keys = list(self.borrowers.keys())
         for i in range(len(self.data)):
-            self.data.to_csv('data.csv', sep=';', index=False)
+            self.data.to_csv(p.data, sep=';', index=False)
             self.data.loc[i, 'mip'] = insurance.mip(self.data.loc[i, 'balance'], self.signature,
                                                           keys[0].birth, self.signature + relativedelta(months=i),
                                                           keys[1].birth if keys[1] else None,
@@ -108,6 +117,7 @@ if __name__ == '__main__':
     c.complete_schedule()
     rental = Rental(d)
     rental.gen_rent(p.rent, p.amortization_months, p.inflation, p.rent_raising_period)
-    d.investment_return(p.downpayment, p.amortization_months, p.real_return, 'cash')
-    d.investment_return(p.purchase_price, p.amortization_months, p.real_return, 'appreciation')
+    # Investment return includes money saved from not making mortgage payments
+    d.investment_return(p.downpayment, p.amortization_months, p.real_return, 'rent_savings')
+    d.investment_return(p.purchase_price, p.amortization_months, p.real_return, 'home_value')
     d.equity()
