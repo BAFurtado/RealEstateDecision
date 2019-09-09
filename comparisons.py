@@ -16,6 +16,25 @@ class Comparison:
     def __init__(self):
         self.data = pd.DataFrame()
 
+    def save(self):
+        self.data.to_csv('data.csv', sep=';', index=False)
+
+    def investment_return(self, amount, months, rate, title='cash'):
+        for i in range(months):
+            if i == 0:
+                self.data.loc[0, title] = amount
+            else:
+                amount *= 1 + monthly_rate(rate)
+                self.data.loc[i, title] = amount
+        self.save()
+
+    def equity(self):
+        self.data.loc[:, 'equity'] = self.data.loc[:, 'appreciation'] - self.data.loc[:, 'balance']
+        self.save()
+
+    def rent_savings(self):
+        pass
+
 
 class Rental:
     def __init__(self, base):
@@ -26,15 +45,6 @@ class Rental:
             self.data.loc[i, 'rent'] = round(rent, 2)
             if (i % (period_adjustment - 1)) == 0 and i > 0:
                 rent *= (1 + inflation)
-        self.data.to_csv('data.csv', sep=';', index=False)
-
-    def cash_return(self, amount, months, rate):
-        for i in range(months):
-            if i == 0:
-                self.data.loc[0, 'cash'] = amount
-            else:
-                amount *= 1 + monthly_rate(rate)
-                self.data.loc[i, 'cash'] = amount
         self.data.to_csv('data.csv', sep=';', index=False)
 
 
@@ -68,7 +78,7 @@ class Contract:
             self.data.loc[i, 'balance'] = self.data.loc[i - 1, 'balance'] - self.data.loc[i, 'amortization']
         self.data.loc[:, 'dfi'] = round(self.dfi(), 2)
         self.mip()
-        self.data.loc[:, 'purchase_payment'] = self.data.amortization + self.data.interest \
+        self.data.loc[:, 'payment'] = self.data.amortization + self.data.interest \
                                                + self.data.dfi + self.data.mip
         self.data.to_csv('data.csv', sep=';', index=False)
 
@@ -88,10 +98,9 @@ class Contract:
 
 if __name__ == '__main__':
     d = Comparison()
-    original_value = p.appraisal_value
     b1 = Borrower(datetime.date(1971, 10, 16))
     b2 = Borrower(datetime.date(1966, 10, 16))
-    c = Contract(datetime.date(2013, 10, 23), original_value, d)
+    c = Contract(datetime.date(2013, 10, 23), p.purchase_price - p.downpayment, d)
     c.set_borrowers(b1, .8601)
     c.set_borrowers(b2, .1399)
     c.set_mortgage(p.interest_rate, p.amortization_months, p.loan_amount, p.mortgage_choice)
@@ -99,4 +108,6 @@ if __name__ == '__main__':
     c.complete_schedule()
     rental = Rental(d)
     rental.gen_rent(p.rent, p.amortization_months, p.inflation, p.rent_raising_period)
-    rental.cash_return(p.downpayment, p.amortization_months, p.real_return)
+    d.investment_return(p.downpayment, p.amortization_months, p.real_return, 'cash')
+    d.investment_return(p.purchase_price, p.amortization_months, p.real_return, 'appreciation')
+    d.equity()

@@ -12,5 +12,6 @@ Obs1. It is common practice that tenants pay for condominium and property taxes.
 
 Obs2. There is no income tax deduction for mortgage interest paid    
 
- 
+*TODO: Equity, Savings when renting, Benefit of buying*
 
+*TODO: Generalization, Sensitivity?*
