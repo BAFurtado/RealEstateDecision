@@ -1,5 +1,3 @@
-import datetime
-
 import pandas as pd
 from dateutil.relativedelta import relativedelta
 
@@ -105,19 +103,33 @@ class Contract:
                                                           self.borrowers[keys[1]] if keys[1] else None)
 
 
-if __name__ == '__main__':
+def main():
+    # Sequence of events
+    # Initiate a comparison
     d = Comparison()
-    b1 = Borrower(datetime.date(1971, 10, 16))
-    b2 = Borrower(datetime.date(1966, 10, 16))
-    c = Contract(datetime.date(2013, 10, 23), p.purchase_price - p.downpayment, d)
-    c.set_borrowers(b1, .8601)
-    c.set_borrowers(b2, .1399)
+
+    # Import at most two borrowers with birthdate and percentage of ownership
+    b1 = Borrower(p.birth1)
+    b2 = Borrower(p.birth2)
+
+    # Set the contract
+    c = Contract(p.contract_date, p.purchase_price - p.downpayment, d)
+    c.set_borrowers(b1, p.perc_borrower1)
+    c.set_borrowers(b2, p.perc_borrower2)
     c.set_mortgage(p.interest_rate, p.amortization_months, p.loan_amount, p.mortgage_choice)
+
+    # Run schedule generation
     c.gen_schedule()
     c.complete_schedule()
+
+    # Include rental details and investments
     rental = Rental(d)
     rental.gen_rent(p.rent, p.amortization_months, p.inflation, p.rent_raising_period)
     # Investment return includes money saved from not making mortgage payments
     d.investment_return(p.downpayment, p.amortization_months, p.real_return, 'rent_savings')
     d.investment_return(p.purchase_price, p.amortization_months, p.real_return, 'home_value')
     d.equity()
+
+
+if __name__ == '__main__':
+    main()

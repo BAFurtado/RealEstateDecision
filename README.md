@@ -15,3 +15,5 @@ Obs2. There is no income tax deduction for mortgage interest paid
 Obs3. Taxes of 15% apply both in cash gains as well as increase in home values
 
 *TODO: Generalization, Sensitivity?, Present values*
+
+TODO: Check last line 

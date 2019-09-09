@@ -1,21 +1,29 @@
-# Purchasing
+import datetime
 
-purchase_price = 933000
-downpayment = 483000
+# Purchasing
+purchase_price = 500000
+downpayment = 250000
 loan_amount = purchase_price - downpayment
-interest_rate = .084
-amortization_years = 20
+interest_rate = .08
+amortization_years = 30
 amortization_months = None
 mortgage_choice = 'sac'
-
 selling_cost = .06
+contract_date = datetime.date(2010, 1, 1)
+
+# Borrowers' age (mutuários)
+birth1 = datetime.date(1970, 1, 1)
+birth2 = datetime.date(1970, 1, 1)
+perc_borrower1 = .6
+perc_borrower2 = .4
+
 
 # Macroeconomics
 inflation = .02
 return_on_cash = .04
 
 # Rental
-rent_percentage = .003
+rent_percentage = .002
 rent = purchase_price * rent_percentage
 rent_raising_period = 12
 
