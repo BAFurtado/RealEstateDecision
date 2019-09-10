@@ -127,6 +127,7 @@ def main(p):
     c = Contract(p['CONTRACT_DATE'], p['PURCHASE_PRICE'] - p['DOWNPAYMENT'], d)
     c.set_borrowers(b1, p['PERC_BORROWER1'])
     c.set_borrowers(b2, p['PERC_BORROWER2'])
+    p['AMORTIZATION_MONTHS'] = int(p['AMORTIZATION_MONTHS'])
     c.set_mortgage(p['INTEREST_RATE'], p['AMORTIZATION_MONTHS'], p['LOAN_AMOUNT'],
                    p['MORTGAGE_CHOICE'])
 

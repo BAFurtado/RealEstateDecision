@@ -35,7 +35,6 @@ def output(values, res):
 
 
 if __name__ == '__main__':
-    a = 'RENT_PERCENTAGE'
-    b = 'INFLATION'
-    v, out = prepare(a, b)
+    a = 'AMORTIZATION_YEARS'
+    v, out = prepare(a)
     output(v, out)
