@@ -1,16 +1,20 @@
 import copy
 
+from joblib import Parallel, delayed
+
 import comparisons
 
 
 # overrides are a list containing dictionaries. Each dictionary may contain one or more parameter changing
+def multiple(o):
+    p = copy.deepcopy(comparisons.conf.PARAMS)
+    p.update(o)
+    return p
 
-def multiple(overrides):
-    for o in overrides:
-        p = copy.deepcopy(comparisons.conf.PARAMS)
-        p.update(o)
-        print(p['RENT_PERCENTAGE'])
-        print(comparisons.main(p))
+
+def runs(overrides):
+    res = Parallel(n_jobs=4)(delayed(comparisons.main)(multiple(o)) for o in overrides)
+    print(res)
 
 
 if __name__ == '__main__':
@@ -19,4 +23,4 @@ if __name__ == '__main__':
     d0 = list()
     for v in values:
         d0.append({'RENT_PERCENTAGE': v * rent_percentage})
-    multiple(d0)
+    runs(d0)

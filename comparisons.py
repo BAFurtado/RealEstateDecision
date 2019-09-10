@@ -30,7 +30,7 @@ class Comparison:
                         amount *= (1 - self.params['CUSTODY_FEE'])
                 amount *= 1 + monthly_rate(rate)
                 self.data.loc[i, title] = amount
-        self.save()
+        # self.save()
 
     def save_rent_different(self, j):
         return self.data.loc[j, 'payment'] - self.data.loc[j, 'rent']
@@ -38,7 +38,7 @@ class Comparison:
     def equity(self):
         self.data.loc[:, 'equity'] = self.data.loc[:, 'home_value'] - self.data.loc[:, 'balance']
         self.selling()
-        self.save()
+        # self.save()
 
     def selling(self):
         self.data.loc[:, 'purchase_savings'] = self.data.loc[:, 'equity'] - \
@@ -62,7 +62,7 @@ class Rental:
             self.data.loc[i, 'rent'] = round(rent, 2)
             if (i % (period_adjustment - 1)) == 0 and i > 0:
                 rent *= (1 + inflation)
-        self.data.to_csv(self.params['DATA'], sep=';', index=False)
+        # self.data.to_csv(self.params['DATA'], sep=';', index=False)
 
 
 class Borrower:
@@ -98,7 +98,7 @@ class Contract:
         self.mip()
         self.data.loc[:, 'payment'] = self.data.amortization + self.data.interest \
                                                + self.data.dfi + self.data.mip
-        self.data.to_csv(self.params['DATA'], sep=';', index=False)
+        # self.data.to_csv(self.params['DATA'], sep=';', index=False)
 
     def dfi(self):
         return self.value * insurance.DFI
@@ -106,7 +106,7 @@ class Contract:
     def mip(self):
         keys = list(self.borrowers.keys())
         for i in range(len(self.data)):
-            self.data.to_csv(self.params['DATA'], sep=';', index=False)
+            # self.data.to_csv(self.params['DATA'], sep=';', index=False)
             self.data.loc[i, 'mip'] = insurance.mip(self.data.loc[i, 'balance'], self.signature,
                                                           keys[0].birth, self.signature + relativedelta(months=i),
                                                           keys[1].birth if keys[1] else None,
@@ -144,6 +144,7 @@ def main(p):
     d.investment_return(p['PURCHASE_PRICE'], p['AMORTIZATION_MONTHS'], p['REAL_RETURN'],
                         'home_value')
     d.equity()
+
     return d.present_value_buying()
 
 
