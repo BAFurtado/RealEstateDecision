@@ -2,8 +2,8 @@ import pandas as pd
 from dateutil.relativedelta import relativedelta
 from numpy import pv
 
-import insurance
 import conf
+import insurance
 from mortgage import Mortgage, MONTHS_IN_YEAR
 
 
@@ -144,8 +144,7 @@ def main(p):
     d.investment_return(p['PURCHASE_PRICE'], p['AMORTIZATION_MONTHS'], p['REAL_RETURN'],
                         'home_value')
     d.equity()
-
-    return d.present_value_buying()
+    return round(d.present_value_buying(), 2)
 
 
 if __name__ == '__main__':

@@ -12,10 +12,10 @@ SELLING_COST = .06
 CONTRACT_DATE = datetime.date(2010, 1, 1)
 
 # Borrowers' age (mutuários)
-BIRTH1 = datetime.date(1970, 1, 1)
-BIRTH2 = datetime.date(1970, 1, 1)
-PERC_BORROWER1 = .6
-PERC_BORROWER2 = .4
+BIRTH1 = datetime.date(1993, 1, 1)
+BIRTH2 = datetime.date(1996, 1, 1)
+PERC_BORROWER1 = .9
+PERC_BORROWER2 = .1
 
 
 # Macroeconomics
