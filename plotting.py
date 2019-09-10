@@ -2,23 +2,11 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 import comparisons
-
-values = [.75, .9, 1, 1.1, 1.25]
-# values = [1]
-
-
-def overriding(ax):
-    for each in values:
-        save = comparisons.p.purchase_price, comparisons.p.rent
-        comparisons.p.purchase_price *= each
-        comparisons.p.rent *= each
-        comparisons.main()
-        comparisons.p.purchase_price, comparisons.p.rent = save
-        plot(ax)
+import conf
 
 
 def plot(ax):
-    data = pd.read_csv(comparisons.p.data, sep=';')
+    data = pd.read_csv(conf.PARAMS['DATA'], sep=';')
     # ax.plot(data['home_value'], label='Home value')
     # ax.plot(data['balance'], label='Debt')
     # ax.plot(data['equity'], label='Equity', color='red')
@@ -31,7 +19,8 @@ def plotting():
     ax = fig.add_subplot(1, 1, 1)
 
     # Plotting time series
-    overriding(ax)
+    comparisons.main(conf.PARAMS)
+    plot(ax)
     handles, labels = ax.get_legend_handles_labels()
     ax.legend([handles[0], handles[1]], [labels[0], labels[1]], loc='best', frameon=False)
     ax.set(xlabel='Months', ylabel='Values', title='Comparison Rental x Ownership')
