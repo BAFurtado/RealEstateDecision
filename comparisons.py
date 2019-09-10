@@ -4,6 +4,7 @@ from dateutil.relativedelta import relativedelta
 import insurance
 import parameters as p
 from mortgage import Mortgage, MONTHS_IN_YEAR
+from numpy import pv
 
 
 def monthly_rate(rate):
@@ -41,6 +42,13 @@ class Comparison:
     def selling(self):
         self.data.loc[:, 'purchase_savings'] = self.data.loc[:, 'equity'] - \
                                                self.data.loc[:, 'home_value'] * p.selling_cost
+
+    def present_value_buying(self):
+        return pv(p.real_return / MONTHS_IN_YEAR,
+                  p.amortization_months,
+                  0,
+                  self.data.loc[p.amortization_months - 1, 'purchase_savings'] -
+                  self.data.loc[p.amortization_months - 1, 'rent_savings'])
 
 
 class Rental:
@@ -129,7 +137,9 @@ def main():
     d.investment_return(p.downpayment, p.amortization_months, p.real_return, 'rent_savings')
     d.investment_return(p.purchase_price, p.amortization_months, p.real_return, 'home_value')
     d.equity()
+    return d.present_value_buying()
 
 
 if __name__ == '__main__':
-    main()
+    output = main()
+    print(output)

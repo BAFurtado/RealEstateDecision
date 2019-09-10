@@ -3,25 +3,27 @@ import pandas as pd
 
 import comparisons
 
-values = [.5, .75, .9, 1, 1.1, 1.25, 1.5]
+values = [.75, .9, 1, 1.1, 1.25]
+# values = [1]
 
 
 def overriding(ax):
-    for each in range(len(values)):
-        p = comparisons.p.purchase_price
-        comparisons.p.purchase_price = p * each
+    for each in values:
+        save = comparisons.p.purchase_price, comparisons.p.rent
+        comparisons.p.purchase_price *= each
+        comparisons.p.rent *= each
         comparisons.main()
-        comparisons.p.purchase_price = p
+        comparisons.p.purchase_price, comparisons.p.rent = save
         plot(ax)
 
 
 def plot(ax):
     data = pd.read_csv(comparisons.p.data, sep=';')
-    ax.plot(data['home_value'], label='Home value')
-    ax.plot(data['balance'], label='Debt')
-    ax.plot(data['equity'], label='Equity')
-    ax.plot(data['rent_savings'], label="Savings when renting")
-    ax.plot(data['purchase_savings'], label='Benefit of buying')
+    # ax.plot(data['home_value'], label='Home value')
+    # ax.plot(data['balance'], label='Debt')
+    # ax.plot(data['equity'], label='Equity', color='red')
+    ax.plot(data['rent_savings'], label="Savings when renting", color='green')
+    ax.plot(data['purchase_savings'], label='Benefit of buying', color='blue')
 
 
 def plotting():
@@ -30,7 +32,8 @@ def plotting():
 
     # Plotting time series
     overriding(ax)
-    # ax.legend(frameon=False)
+    handles, labels = ax.get_legend_handles_labels()
+    ax.legend([handles[0], handles[1]], [labels[0], labels[1]], loc='best', frameon=False)
     ax.set(xlabel='Months', ylabel='Values', title='Comparison Rental x Ownership')
     # Include parameters used
     # plt.annotate('House price {:,.0f}, \ndownpayment {:,.0f}, \ninterest annual {:.3f}, years {:.0f}, '
