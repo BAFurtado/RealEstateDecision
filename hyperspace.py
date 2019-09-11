@@ -1,5 +1,4 @@
 import matplotlib.pyplot as plt
-import matplotlib.ticker as ticker
 from matplotlib.patches import Patch
 from numpy import arange
 
@@ -56,6 +55,6 @@ if __name__ == '__main__':
     g = 'INTEREST_RATE'
     h = 'REAL_RETURN'
     print(a, conf.PARAMS[a])
-    v, out = generalization.prepare(a, b, c, d, e, f, g, h)
-    generalization.output(v, out)
+    v, out = generalization.prepare(b, h, e, f)
+    generalization.results(v, out)
     plotting(v, out)
