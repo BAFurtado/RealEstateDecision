@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
 from matplotlib.patches import Patch
 from numpy import arange
 
@@ -25,7 +26,7 @@ def plotting(values, output):
     ax.legend(handles=legend_elements + handles, frameon=False, loc="upper right",
               bbox_to_anchor=(1, 0, 0.5, 1), title='Parameter Value Reference')
 
-    ax.set(xlabel='Parameter Percentage Variation (1.0 is the reference)', ylabel='Present Value $',
+    ax.set(xlabel='Multiplying Parameter Factor', ylabel='Present Value $',
            title='Comparison Rental x Ownership')
 
     ax.spines['top'].set_visible(False)
@@ -34,6 +35,8 @@ def plotting(values, output):
     ax.spines['left'].set_visible(False)
     ax.get_xaxis().tick_bottom()
     ax.get_yaxis().tick_left()
+
+    ax.xaxis.set_major_formatter(plt.FuncFormatter('{:.2f}x'.format))
     ax.yaxis.set_major_formatter(plt.FuncFormatter('${:,.0f}'.format))
 
     plt.grid(True, 'major', 'y', ls='--', lw=.5, c='k', alpha=.3)
@@ -53,6 +56,6 @@ if __name__ == '__main__':
     g = 'INTEREST_RATE'
     h = 'REAL_RETURN'
     print(a, conf.PARAMS[a])
-    v, out = generalization.prepare(a, b, c, f, g)
+    v, out = generalization.prepare(a, b, c, d, e, f, g, h)
     generalization.output(v, out)
     plotting(v, out)
