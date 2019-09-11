@@ -1,6 +1,9 @@
-import generalization
-import conf
 import matplotlib.pyplot as plt
+from matplotlib.patches import Patch
+from numpy import arange
+
+import conf
+import generalization
 
 
 def plotting(values, output):
@@ -8,11 +11,23 @@ def plotting(values, output):
     ax = fig.add_subplot(1, 1, 1)
 
     for key in output.keys():
-        ax.plot(values, output[key], label='{}: {}'.format(key, conf.PARAMS[key]), alpha=.9, lw=.8)
+        ax.plot(values, output[key], label='{}: {}'.format(key, conf.PARAMS[key]), alpha=1, lw=1.1)
 
-    ax.legend(frameon=False, loc='best')
-    ax.set(xlabel='Parameter Percentage Variation', ylabel='Present Value $ (negative: BUY)',
+    x = arange(values.min(), values.max(), .01)
+    ax.fill_between(x, max([max(i) for i in output.values()]), 0, where=max(max(output.values())) > 0,
+                    facecolor='green', alpha=.3)
+    ax.fill_between(x, 0, min([min(i) for i in output.values()]), where=min([min(i) for i in output.values()]) < 0,
+                    facecolor='red', alpha=.3)
+
+    handles, labels = ax.get_legend_handles_labels()
+    legend_elements = [Patch(facecolor='green', edgecolor='green', alpha=.3, label='Rent'),
+                       Patch(facecolor='red', edgecolor='red', alpha=.3, label='Buy')]
+    ax.legend(handles=legend_elements + handles, frameon=False, loc="upper right",
+              bbox_to_anchor=(1, 0, 0.5, 1), title='Parameter Value Reference')
+
+    ax.set(xlabel='Parameter Percentage Variation (1.0 is the reference)', ylabel='Present Value $',
            title='Comparison Rental x Ownership')
+
     ax.spines['top'].set_visible(False)
     ax.spines['bottom'].set_visible(False)
     ax.spines['right'].set_visible(False)
@@ -32,10 +47,11 @@ if __name__ == '__main__':
     a = 'RENT_PERCENTAGE'
     b = 'INFLATION'
     c = 'LOAN_AMOUNT'
-    # d = 'PURCHASE_PRICE'
-    # e = 'DOWNPAYMENT'
+    d = 'PURCHASE_PRICE'
+    e = 'DOWNPAYMENT'
     f = 'AMORTIZATION_MONTHS'
     g = 'INTEREST_RATE'
+    h = 'REAL_RETURN'
     print(a, conf.PARAMS[a])
     v, out = generalization.prepare(a, b, c, f, g)
     generalization.output(v, out)

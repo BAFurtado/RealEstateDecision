@@ -17,7 +17,8 @@ class Comparison:
         self.params = p
 
     def save(self):
-        self.data.to_csv(self.params['DATA'], sep=';', index=False)
+        # self.data.to_csv(self.params['DATA'], sep=';', index=False)
+        pass
 
     def investment_return(self, amount, months, rate, title='rent_savings'):
         for i in range(months):
@@ -30,7 +31,7 @@ class Comparison:
                         amount *= (1 - self.params['CUSTODY_FEE'])
                 amount *= 1 + monthly_rate(rate)
                 self.data.loc[i, title] = amount
-        # self.save()
+        self.save()
 
     def save_rent_different(self, j):
         return self.data.loc[j, 'payment'] - self.data.loc[j, 'rent']
@@ -38,7 +39,7 @@ class Comparison:
     def equity(self):
         self.data.loc[:, 'equity'] = self.data.loc[:, 'home_value'] - self.data.loc[:, 'balance']
         self.selling()
-        # self.save()
+        self.save()
 
     def selling(self):
         self.data.loc[:, 'purchase_savings'] = self.data.loc[:, 'equity'] - \
