@@ -1,23 +1,17 @@
 import conf
 import generalization
+import copy
 
 
 def creating_params(size):
-    lst = list()
-    for i in range(size):
-        ds = dict()
-        for k in conf.RND.keys():
-            try:
-                ds[k] = conf.RND[k][i]
-            except:
-                ds[k] = conf.RND[k]
-        lst.append(ds)
-    return lst
+    return [copy.deepcopy(conf.RND) for i in range(size)]
 
 
 if __name__ == '__main__':
-    s = 3
-    l0s = creating_params(s)
-    l1 = [generalization.multiple(d) for d in l0s]
-    out = generalization.runs(l1)
+    s = 10
+    l0 = creating_params(s)
+    for each in l0:
+        for k in each.keys():
+            print(k, each[k])
+    out = generalization.runs(l0)
     print(out)
