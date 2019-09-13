@@ -8,9 +8,7 @@ import inspect
 import importlib
 
 PACKAGE = __package__
-NAMES = [
-  'params'
-]
+NAMES = ['params', 'rnd']
 
 
 def load_conf_module(name, key=None):

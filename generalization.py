@@ -9,7 +9,6 @@ import comparisons
 def multiple(o):
     p = copy.deepcopy(comparisons.conf.PARAMS)
     o = check_consistency(p, o)
-    print(o)
     p.update(o)
     return p
 
@@ -45,18 +44,18 @@ def check_consistency(original, override):
             override['RETURN_ON_CASH'] = .00001
         else:
             override['RETURN_ON_CASH'] = temp
-
     return override
 
 
 def prepare(*parameter):
     output = dict()
-    values = linspace(.5, 2, 4)
+    values = linspace(.5, 2, 20)
     for each in parameter:
-        d0 = list()
+        l0 = list()
         for v in values:
-            d0.append({each: round(v * comparisons.conf.PARAMS[each], 4)})
-        output[each] = runs(d0)
+            l0.append({each: round(v * comparisons.conf.PARAMS[each], 4)})
+        print(l0)
+        output[each] = runs(l0)
     return around(values, 4), output
 
 
@@ -70,5 +69,6 @@ def results(values, res):
 if __name__ == '__main__':
     a = 'LOAN_AMOUNT'
     b = 'PURCHASE_PRICE'
-    v, out = prepare(a, b)
+    c = 'INFLATION'
+    v, out = prepare(a, b, c)
     results(v, out)
