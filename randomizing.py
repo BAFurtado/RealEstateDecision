@@ -1,10 +1,8 @@
 import conf
 import generalization
-import copy
-import importlib
 
-
-KEYS = ['PURCHASE_PRICE', 'DOWNPAYMENT', 'INFLATION', 'RETURN_ON_CASH', 'INTEREST_RATE', 'BIRTH1', 'BIRTH2',
+KEYS = ['PURCHASE_PRICE', 'DOWNPAYMENT', 'LOAN_AMOUNT', 'INFLATION', 'RETURN_ON_CASH', 'INTEREST_RATE', 'REAL_RETURN',
+        'BIRTH1', 'BIRTH2',
         'PERC_BORROWER1', 'PERC_BORROWER2', 'RENT_PERCENTAGE', 'AMORTIZATION_MONTHS']
 
 
@@ -20,7 +18,7 @@ def creating_params(size):
 
 
 if __name__ == '__main__':
-    s = 10
+    s = 2
     l0 = creating_params(s)
     for each in l0:
         for k in each.keys():

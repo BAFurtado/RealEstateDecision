@@ -21,7 +21,7 @@ class Comparison:
         pass
 
     def investment_return(self, amount, months, rate, title='rent_savings'):
-        for i in range(months):
+        for i in range(int(months)):
             if i == 0:
                 self.data.loc[0, title] = amount
             else:
@@ -59,7 +59,7 @@ class Rental:
         self.params = base.params
 
     def gen_rent(self, rent, months, inflation, period_adjustment):
-        for i in range(months):
+        for i in range(int(months)):
             self.data.loc[i, 'rent'] = round(rent, 2)
             if (i % (period_adjustment - 1)) == 0 and i > 0:
                 rent *= (1 + inflation)

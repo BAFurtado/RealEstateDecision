@@ -29,6 +29,7 @@ def check_consistency(original, override):
     if 'INFLATION' in override.keys():
         temp = np.round((original['RETURN_ON_CASH'] - override['INFLATION'])
                                         * (1 - original['TAX']), 4)
+        override['INFLATION'] = temp
     if 'RETURN_ON_CASH' in override.keys():
         override['REAL_RETURN'] = np.round((override['RETURN_ON_CASH'] - original['INFLATION'])
                                         * (1 - original['TAX']), 4)
@@ -38,6 +39,9 @@ def check_consistency(original, override):
     if 'REAL_RETURN' in override.keys():
         temp = np.round((override['REAL_RETURN'] + original['INFLATION'])
                                         / (1 - original['TAX']), 4)
+        override['REAL_RETURN'] = temp
+    if 'AMORTIZATION_MONTHS' in override.keys():
+        override['AMORTIZATION_MONTHS'] = int(override['AMORTIZATION_MONTHS'])
     return override
 
 
