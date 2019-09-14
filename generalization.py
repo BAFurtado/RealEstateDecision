@@ -1,7 +1,9 @@
 import copy
 
+import numpy as np
 from joblib import Parallel, delayed
 from numpy import linspace, around
+
 import comparisons
 
 
@@ -25,25 +27,17 @@ def check_consistency(original, override):
     if 'DOWNPAYMENT' in override.keys():
         override['LOAN_AMOUNT'] = original['PURCHASE_PRICE'] - override['DOWNPAYMENT']
     if 'INFLATION' in override.keys():
-        temp = round((original['RETURN_ON_CASH'] - override['INFLATION'])
+        temp = np.round((original['RETURN_ON_CASH'] - override['INFLATION'])
                                         * (1 - original['TAX']), 4)
-        if temp == 0:
-            override['REAL_RETURN'] = .00001
-        else:
-            override['REAL_RETURN'] = temp
     if 'RETURN_ON_CASH' in override.keys():
-        override['REAL_RETURN'] = round((override['RETURN_ON_CASH'] - original['INFLATION'])
+        override['REAL_RETURN'] = np.round((override['RETURN_ON_CASH'] - original['INFLATION'])
                                         * (1 - original['TAX']), 4)
     if 'TAX' in override.keys():
-        override['REAL_RETURN'] = round((original['RETURN_ON_CASH'] - original['INFLATION'])
+        override['REAL_RETURN'] = np.round((original['RETURN_ON_CASH'] - original['INFLATION'])
                                         * (1 - override['TAX']), 4)
     if 'REAL_RETURN' in override.keys():
-        temp = round((override['REAL_RETURN'] + original['INFLATION'])
+        temp = np.round((override['REAL_RETURN'] + original['INFLATION'])
                                         / (1 - original['TAX']), 4)
-        if temp == 0:
-            override['RETURN_ON_CASH'] = .00001
-        else:
-            override['RETURN_ON_CASH'] = temp
     return override
 
 
