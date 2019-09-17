@@ -12,7 +12,7 @@ def get_truncated(lower, upper, mu, sigma):
 
 
 def gen_birth():
-    return (np.datetime64('1959-01-01') + seed.choice(13140)).astype(datetime.datetime)
+    return (np.datetime64('1969-08-11') + seed.choice(9150)).astype(datetime.datetime)
 
 
 def get_new_values():
@@ -26,6 +26,7 @@ def get_new_values():
     interest_rate = np.round(seed.normal(loc=.06, scale=.02), 4)
     real_return = np.round((return_on_cash - inflation) * (1 - .15), 4)
 
+    amortization_months = seed.randint(60, 360)
     birth1 = gen_birth()
     birth2 = gen_birth()
 
@@ -35,7 +36,6 @@ def get_new_values():
     # Rental
     rent_percentage = np.round(get_truncated(0.02, .06, .03, .2).rvs(), 3)
 
-    amortization_months = seed.randint(60, 360)
     return [purchase_price, downpayment, loan_amount, inflation, return_on_cash, interest_rate, real_return,
             birth1, birth2,
             perc_borrower1, perc_borrower2, rent_percentage, amortization_months]

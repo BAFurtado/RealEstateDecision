@@ -1,5 +1,4 @@
 import datetime
-import copy
 
 # Purchasing
 PURCHASE_PRICE = 700000
@@ -9,10 +8,10 @@ LOAN_AMOUNT = PURCHASE_PRICE - DOWNPAYMENT
 INTEREST_RATE = .08
 MORTGAGE_CHOICE = 'sac'
 SELLING_COST = .06
-CONTRACT_DATE = datetime.date(2019, 9, 1)
+CONTRACT_DATE = datetime.date(2019, 9, 17)
 
 # Borrowers' age (mutuários)
-BIRTH1 = datetime.date(1968, 9, 23)
+BIRTH1 = datetime.date(1969, 9, 23)
 BIRTH2 = datetime.date(1970, 9, 1)
 
 PERC_BORROWER1 = .5

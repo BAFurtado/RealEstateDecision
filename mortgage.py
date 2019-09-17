@@ -8,7 +8,6 @@ Bernardo A Furtado
 """
 import argparse
 from itertools import islice
-import datetime
 
 from numpy import pmt
 

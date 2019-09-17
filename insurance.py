@@ -1,6 +1,7 @@
 import datetime
 import pandas as pd
 
+
 # MIP applies to balance
 # fee depends on ages and percentage of estate ownership
 
@@ -12,7 +13,9 @@ fees = pd.read_csv('fees.csv', sep=';') / 100
 
 
 def age(d1, d2):
-    return d1.year - d2.year - ((d1.month, d1.day) < (d2.month, d2.day))
+    ag = d1.year - d2.year - ((d1.month, d1.day) < (d2.month, d2.day))
+    print(ag)
+    return ag
 
 
 def find_row(y):
@@ -26,19 +29,18 @@ def fee(birth, contract, current):
 
 
 def mip(balance, contract_date, birth1, current_date=None, birth2=None, pc1=1., pc2=0.):
-    return balance * fee(birth1, contract_date, current_date) * pc1 \
-           + balance * fee(birth2, contract_date, current_date) * pc2
+    return (balance * fee(birth1, contract_date, current_date) * pc1) \
+           + (balance * fee(birth2, contract_date, current_date) * pc2)
 
 
 if __name__ == '__main__':
-    original_value = 1038000
-    bal = 157565.05
-    contr = datetime.date(2013, 10, 23)
-    b1 = datetime.date(1971, 10, 16)
-    b2 = datetime.date(1966, 10, 16)
-    cur_age = datetime.date(2019, 9, 4)
-    # print(fee(b1, contr, cur_age))
-    # print(fee(b2, contr, cur_age))
-    p1 = .8601
-    p2 = .1399
-    m = mip(bal, contr, b1, datetime.date(2019, 9, 4), b2, p1, p2)
+    for i in range(100):
+        original_value = 1038000
+        bal = 157565.05
+        contr = datetime.date(2019, 9, 1)
+        b1 = datetime.date(2079, 9, 1)
+        b2 = datetime.date(2089, 9, 1)
+        current_date = datetime.date(2029, 9, 1)
+        p1 = .8601
+        p2 = .1399
+        m = mip(bal, contr, b1, current_date, b2, p1, p2)

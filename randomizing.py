@@ -18,7 +18,7 @@ def creating_params(size):
 
 
 if __name__ == '__main__':
-    s = 20
+    s = 100
     l0 = creating_params(s)
     out = generalization.runs(l0)
     print(out)
