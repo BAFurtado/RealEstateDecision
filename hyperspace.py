@@ -54,7 +54,6 @@ if __name__ == '__main__':
     f = 'AMORTIZATION_MONTHS'
     g = 'INTEREST_RATE'
     h = 'REAL_RETURN'
-    print(a, conf.PARAMS[a])
-    v, out = generalization.prepare(b, h, e, f)
+    v, out = generalization.prepare(a, b, c, d, e, f, g, h)
     generalization.results(v, out)
     plotting(v, out)

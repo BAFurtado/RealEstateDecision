@@ -7,18 +7,22 @@ from numpy import linspace, around
 import comparisons
 
 
-# Overrides are a list containing dictionaries. Each dictionary may contain one or more parameter changing
-def multiple(o):
+# o is a dictionary with overrides
+def multiple(o, consistency):
     p = copy.deepcopy(comparisons.conf.PARAMS)
-    o = check_consistency(p, o)
+    if consistency:
+        o = check_consistency(p, o)
     p.update(o)
+    print(p)
     return p
 
 
-def runs(overrides):
-    return Parallel(n_jobs=4)(delayed(comparisons.main)(multiple(o)) for o in overrides)
+# Overrides are a list containing dictionaries. Each dictionary may contain one or more parameter changing
+def runs(overrides, consistency=False):
+    return Parallel(n_jobs=4)(delayed(comparisons.main)(multiple(o, consistency)) for o in overrides)
 
 
+# Asserting that some values that are dependent on others are consistent!
 def check_consistency(original, override):
     if 'LOAN_AMOUNT' in override.keys():
         override['PURCHASE_PRICE'] = original['DOWNPAYMENT'] + override['LOAN_AMOUNT']
@@ -47,13 +51,12 @@ def check_consistency(original, override):
 
 def prepare(*parameter):
     output = dict()
-    values = linspace(.5, 2, 20)
+    values = linspace(.5, 2, 3)
     for each in parameter:
         l0 = list()
         for v in values:
             l0.append({each: round(v * comparisons.conf.PARAMS[each], 4)})
-        print(l0)
-        output[each] = runs(l0)
+        output[each] = runs(l0, True)
     return around(values, 4), output
 
 

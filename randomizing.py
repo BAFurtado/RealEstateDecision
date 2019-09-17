@@ -18,10 +18,7 @@ def creating_params(size):
 
 
 if __name__ == '__main__':
-    s = 2
+    s = 20
     l0 = creating_params(s)
-    for each in l0:
-        for k in each.keys():
-            print(k, each[k])
     out = generalization.runs(l0)
     print(out)
