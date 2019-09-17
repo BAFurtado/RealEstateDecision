@@ -1,3 +1,5 @@
+import matplotlib.pyplot as plt
+
 import conf
 import generalization
 
@@ -18,7 +20,8 @@ def creating_params(size):
 
 
 if __name__ == '__main__':
-    s = 100
+    s = 120
     l0 = creating_params(s)
     out = generalization.runs(l0)
     print(out)
+    plt.hist(out, bins=50)

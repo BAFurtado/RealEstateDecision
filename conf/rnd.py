@@ -1,9 +1,7 @@
-import datetime
-
 import numpy as np
 import numpy.random as nr
-from scipy.stats import truncnorm
 from dateutil.relativedelta import relativedelta
+from scipy.stats import truncnorm
 
 seed = nr.RandomState(0)
 
@@ -14,8 +12,8 @@ def get_truncated(lower, upper, mu, sigma):
 
 def gen_birth(contract):
     # Borrower has to be at least 25 at contract time, and not over 80 at contract end
-    # Hence, limiting age between 25 and 75 years old (9150, 27450 days)
-    return contract - relativedelta(days=nr.randint(9150, 27450))
+    # Hence, limiting age between 26 and 74 years old (9515, 27085 days)
+    return contract - relativedelta(days=nr.randint(9515, 27085))
 
 
 def gen_amortization(birth, contract):
@@ -24,6 +22,7 @@ def gen_amortization(birth, contract):
     # Checking to see if oldest borrower at the end of contract is above age limit of 80 years old
     while (birth + relativedelta(years=80) < contract + relativedelta(months=amortization)) is True:
         amortization = nr.randint(60, 360)
+        print('stuck', birth, contract, amortization)
     return amortization
 
 
