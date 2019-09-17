@@ -3,6 +3,7 @@ import datetime
 import numpy as np
 import numpy.random as nr
 from scipy.stats import truncnorm
+from dateutil.relativedelta import relativedelta
 
 seed = nr.RandomState(0)
 
@@ -11,11 +12,22 @@ def get_truncated(lower, upper, mu, sigma):
     return truncnorm((lower - mu) / sigma, (upper - mu) / sigma, loc=mu, scale=sigma)
 
 
-def gen_birth():
-    return (np.datetime64('1969-08-11') + seed.choice(9150)).astype(datetime.datetime)
+def gen_birth(contract):
+    # Borrower has to be at least 25 at contract time, and not over 80 at contract end
+    # Hence, limiting age between 25 and 75 years old (9150, 27450 days)
+    return contract - relativedelta(days=nr.randint(9150, 27450))
 
 
-def get_new_values():
+def gen_amortization(birth, contract):
+    # Amortization is conditional on age and contract date
+    amortization = nr.randint(60, 360)
+    # Checking to see if oldest borrower at the end of contract is above age limit of 80 years old
+    while (birth + relativedelta(years=80) < contract + relativedelta(months=amortization)) is True:
+        amortization = nr.randint(60, 360)
+    return amortization
+
+
+def get_new_values(contract):
     purchase_price = seed.randint(100000, 1200000)
     loan_amount = int((purchase_price * seed.uniform(.1, .7)))
     downpayment = purchase_price - loan_amount
@@ -26,9 +38,10 @@ def get_new_values():
     interest_rate = np.round(seed.normal(loc=.06, scale=.02), 4)
     real_return = np.round((return_on_cash - inflation) * (1 - .15), 4)
 
-    amortization_months = seed.randint(60, 360)
-    birth1 = gen_birth()
-    birth2 = gen_birth()
+    birth1 = gen_birth(contract)
+    birth2 = gen_birth(contract)
+
+    amortization_months = gen_amortization(min(birth1, birth2), contract)
 
     perc_borrower1 = np.round(seed.random_sample(), 2)
     perc_borrower2 = np.round(1 - perc_borrower1, 2)

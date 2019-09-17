@@ -10,7 +10,7 @@ def creating_params(size):
     lst = list()
     for i in range(size):
         ds = dict()
-        values = conf.rnd.get_new_values()
+        values = conf.rnd.get_new_values(conf.PARAMS['CONTRACT_DATE'])
         for j, key in enumerate(KEYS):
             ds[key] = values[j]
         lst.append(ds)

@@ -13,9 +13,7 @@ fees = pd.read_csv('fees.csv', sep=';') / 100
 
 
 def age(d1, d2):
-    ag = d1.year - d2.year - ((d1.month, d1.day) < (d2.month, d2.day))
-    print(ag)
-    return ag
+    return d1.year - d2.year - ((d1.month, d1.day) < (d2.month, d2.day))
 
 
 def find_row(y):
