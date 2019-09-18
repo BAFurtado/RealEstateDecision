@@ -26,9 +26,12 @@ class Comparison:
                 self.data.loc[0, title] = amount
             else:
                 if title == 'rent_savings':
+                    # Increase the amount every month buy the difference between renting and paying mortgage
                     amount += self.save_rent_different(i)
+                    # Descount annual administration fees
                     if i % 12 == 0:
                         amount *= (1 - self.params['CUSTODY_FEE'])
+                # Either renting or paying mortgage there is a house appreciation or a capital return
                 amount *= 1 + monthly_rate(rate)
                 self.data.loc[i, title] = amount
         self.save()
@@ -143,7 +146,7 @@ def main(p):
     # Investment return includes money saved from not making mortgage payments
     d.investment_return(p['DOWNPAYMENT'], p['AMORTIZATION_MONTHS'], p['REAL_RETURN'],
                         'rent_savings')
-    d.investment_return(p['PURCHASE_PRICE'], p['AMORTIZATION_MONTHS'], p['REAL_RETURN'],
+    d.investment_return(p['PURCHASE_PRICE'], p['AMORTIZATION_MONTHS'], p['HOUSE_REAL_APPRECIATION'],
                         'home_value')
     d.equity()
     return round(d.present_value_buying(), 2)

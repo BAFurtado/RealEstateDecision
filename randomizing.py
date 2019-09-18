@@ -1,12 +1,13 @@
 from collections import defaultdict
 
 import matplotlib.pyplot as plt
-
+from pandas.plotting import register_matplotlib_converters
 import conf
 import generalization
+import numpy as np
 
 KEYS = ['PURCHASE_PRICE', 'DOWNPAYMENT', 'LOAN_AMOUNT', 'INFLATION', 'RETURN_ON_CASH', 'INTEREST_RATE', 'REAL_RETURN',
-        'BIRTH1', 'BIRTH2',
+        'BIRTH1', 'BIRTH2', 'HOUSE_APPRECIATION', 'HOUSE_REAL_APPRECIATION',
         'PERC_BORROWER1', 'PERC_BORROWER2', 'RENT_PERCENTAGE', 'AMORTIZATION_MONTHS']
 
 
@@ -34,10 +35,13 @@ def plot_params(list_dict):
 
 
 if __name__ == '__main__':
-    s = 5000
+    register_matplotlib_converters()
+    s = 1000
     l0 = creating_params(s)
     # plot_params(l0)
     out = generalization.runs(l0)
     print(out)
-    plt.hist(out, bins=10)
+    np.save('output_randomization', out)
+    plt.hist(out, bins=50)
+    plt.savefig('randomization.png')
     plt.show()

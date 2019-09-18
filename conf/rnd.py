@@ -31,10 +31,12 @@ def get_new_values(contract):
     downpayment = purchase_price - loan_amount
 
     # Macroeconomics
-    inflation = np.round(seed.normal(loc=.025, scale=.015), decimals=4)
-    return_on_cash = np.round(inflation + get_truncated(0, .02, .02, .5).rvs(), decimals=4)
-    interest_rate = np.round(seed.normal(loc=.06, scale=.02), 4)
-    real_return = np.round((return_on_cash - inflation) * (1 - .15), 4)
+    inflation = np.round(seed.normal(loc=.025, scale=.025), decimals=6)
+    return_on_cash = np.round(get_truncated(0, .06, .02, .5).rvs(), decimals=6)
+    house_appreciation = np.round(get_truncated(0, .06, .02, .5).rvs(), decimals=6)
+    interest_rate = np.round(seed.normal(loc=.06, scale=.02), 6)
+    real_return = np.round((return_on_cash - inflation) * (1 - .15), 6)
+    house_real_return = np.round((house_appreciation - inflation) * (1 - .15), 6)
 
     birth1 = gen_birth(contract)
     birth2 = gen_birth(contract)
@@ -48,5 +50,5 @@ def get_new_values(contract):
     rent_percentage = np.round(get_truncated(0.02, .06, .03, .2).rvs(), 3)
 
     return [purchase_price, downpayment, loan_amount, inflation, return_on_cash, interest_rate, real_return,
-            birth1, birth2,
+            birth1, birth2, house_appreciation, house_real_return,
             perc_borrower1, perc_borrower2, rent_percentage, amortization_months]
