@@ -17,6 +17,8 @@ Obs3. Taxes of 15% apply both in cash gains as well as increase in home values
 Obs4. Years of payment plus age at signature cannot exceed 80 years. Thus, setting maximum age at 69
 for contract day at 2019 and mortgage of maximum 30 years. Adjust accordingly.
 
+Obs5. You can save a one-time run to a table by uncommenting the save steps in `comparisons.py`
+
 *TODO: Parameters analysis, averaging parameters, coefficient variation
 
 ## To run the model

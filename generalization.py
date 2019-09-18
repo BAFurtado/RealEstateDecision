@@ -13,7 +13,7 @@ def multiple(o, consistency):
     if consistency:
         o = check_consistency(p, o)
     p.update(o)
-    print(p)
+    # print(p)
     return p
 
 

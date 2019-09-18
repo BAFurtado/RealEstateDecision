@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 import matplotlib.pyplot as plt
 
 import conf
@@ -19,9 +21,23 @@ def creating_params(size):
     return lst
 
 
+def plot_params(list_dict):
+    joined_params = defaultdict(list)
+    for each in list_dict:
+        for key in each.keys():
+            joined_params[key].append(each[key])
+    for k in joined_params.keys():
+        plt.hist(joined_params[k], bins=50)
+        plt.title(k)
+        plt.savefig('params_variation/{}.png'.format(k))
+        plt.show()
+
+
 if __name__ == '__main__':
-    s = 120
+    s = 5000
     l0 = creating_params(s)
+    # plot_params(l0)
     out = generalization.runs(l0)
     print(out)
-    plt.hist(out, bins=50)
+    plt.hist(out, bins=10)
+    plt.show()
