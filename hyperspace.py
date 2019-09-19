@@ -46,14 +46,17 @@ def plotting(values, output):
 
 
 if __name__ == '__main__':
-    a = 'RENT_PERCENTAGE'
-    b = 'INFLATION'
-    c = 'LOAN_AMOUNT'
-    d = 'PURCHASE_PRICE'
-    e = 'DOWNPAYMENT'
-    f = 'AMORTIZATION_MONTHS'
-    g = 'INTEREST_RATE'
-    h = 'REAL_RETURN'
-    v, out = generalization.prepare(a, b, c, d, e, f, g, h)
+    # a = 'RENT_PERCENTAGE'
+    # b = 'INFLATION'
+    # c = 'LOAN_AMOUNT'
+    # d = 'PURCHASE_PRICE'
+    # e = 'DOWNPAYMENT'
+    # f = 'AMORTIZATION_MONTHS'
+    # g = 'INTEREST_RATE'
+    # h = 'REAL_RETURN'
+    f = 'RENT_PERCENTAGE'
+    d = 'HOUSE_REAL_APPRECIATION'
+    e = 'REAL_RETURN'
+    v, out = generalization.prepare(d, e, f)
     generalization.results(v, out)
     plotting(v, out)

@@ -26,15 +26,17 @@ def gen_amortization(birth, contract):
 
 
 def get_new_values(contract):
-    purchase_price = seed.randint(100000, 1200000)
-    loan_amount = int((purchase_price * seed.uniform(.1, .7)))
+    purchase_price = seed.randint(100000, 1800000)
+    loan_amount = int((purchase_price * seed.uniform(.1, .8)))
     downpayment = purchase_price - loan_amount
 
     # Macroeconomics
     inflation = np.round(seed.normal(loc=.025, scale=.025), decimals=6)
-    return_on_cash = np.round(get_truncated(0, .06, .02, .5).rvs(), decimals=6)
-    house_appreciation = np.round(get_truncated(0, .06, .02, .5).rvs(), decimals=6)
-    interest_rate = np.round(seed.normal(loc=.06, scale=.02), 6)
+    return_on_cash = np.round(seed.normal(loc=.05, scale=.025), decimals=6)
+    # return_on_cash = np.round(get_truncated(0, .06, .02, .5).rvs(), decimals=6)
+    house_appreciation = np.round(seed.normal(loc=.025, scale=.05), decimals=6)
+    # house_appreciation = np.round(get_truncated(0, .06, .02, .5).rvs(), decimals=6)
+    interest_rate = np.round(seed.normal(loc=.06, scale=.05), 6)
     real_return = np.round((return_on_cash - inflation) * (1 - .15), 6)
     house_real_return = np.round((house_appreciation - inflation) * (1 - .15), 6)
 
@@ -47,7 +49,7 @@ def get_new_values(contract):
     perc_borrower2 = np.round(1 - perc_borrower1, 2)
 
     # Rental
-    rent_percentage = np.round(get_truncated(0.02, .06, .03, .2).rvs(), 3)
+    rent_percentage = np.round(get_truncated(0.0, .06, .03, .2).rvs(), 3)
 
     return [purchase_price, downpayment, loan_amount, inflation, return_on_cash, interest_rate, real_return,
             birth1, birth2, house_appreciation, house_real_return,

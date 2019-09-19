@@ -50,5 +50,4 @@ def plotting():
 
 
 if __name__ == '__main__':
-    comparisons.main()
     plotting()

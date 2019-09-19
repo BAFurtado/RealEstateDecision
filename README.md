@@ -19,10 +19,10 @@ for contract day at 2019 and mortgage of maximum 30 years. Adjust accordingly.
 
 Obs5. You can save a one-time run to a table by uncommenting the save steps in `comparisons.py`
 
-*TODO: Parameters analysis, averaging parameters, coefficient variation
+*TODO: verify hyperspace...
 
 ## To run the model
 1. `python comparisons.py` runs the comparison with the parameters set at params.py (you can change then manually) and outputs the money saved in present value if you choose do BUY a property
 2. `python generalization.py` runs a comparison with the parameters listed at the bottom of the file. You can manually alter parameters. The output printed include the varied parameters and the present value of purchasing a property. 
-3. If instead you run `python plotting.py` it outputs a figure with the chosen parameters variation and the present value output
+3. If instead you run `python hyperspace.py` it outputs a figure with the chosen parameters variation and the present value output
 4. Finally, running python randomizing.py gives you a list of outputs of purchasing present value. (you can change at the bottom of the file the number of times you want to randomically run the model.) And it plots the histogram of outputs.

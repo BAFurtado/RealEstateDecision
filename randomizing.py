@@ -36,9 +36,9 @@ def plot_params(list_dict):
 
 if __name__ == '__main__':
     register_matplotlib_converters()
-    s = 1000
+    s = 200
     l0 = creating_params(s)
-    # plot_params(l0)
+    plot_params(l0)
     out = generalization.runs(l0)
     print(out)
     np.save('output_randomization', out)

@@ -44,6 +44,10 @@ def check_consistency(original, override):
         temp = np.round((override['REAL_RETURN'] + original['INFLATION'])
                                         / (1 - original['TAX']), 4)
         override['REAL_RETURN'] = temp
+    if 'HOUSE_REAL_APPRECIATION' in override.keys():
+        temp = np.round((override['HOUSE_REAL_APPRECIATION'] + original['INFLATION'])
+                                        / (1 - original['TAX']), 4)
+        override['HOUSE_REAL_APPRECIATION'] = temp
     if 'AMORTIZATION_MONTHS' in override.keys():
         override['AMORTIZATION_MONTHS'] = int(override['AMORTIZATION_MONTHS'])
     return override
@@ -51,7 +55,7 @@ def check_consistency(original, override):
 
 def prepare(*parameter):
     output = dict()
-    values = linspace(.5, 2, 3)
+    values = linspace(.5, 2, 4)
     for each in parameter:
         l0 = list()
         for v in values:
@@ -68,8 +72,8 @@ def results(values, res):
 
 
 if __name__ == '__main__':
-    a = 'LOAN_AMOUNT'
-    b = 'PURCHASE_PRICE'
-    c = 'INFLATION'
-    v, out = prepare(a, b, c)
+    f = 'RENT_PERCENTAGE'
+    d = 'HOUSE_REAL_APPRECIATION'
+    e = 'REAL_RETURN'
+    v, out = prepare(d, e, f)
     results(v, out)
