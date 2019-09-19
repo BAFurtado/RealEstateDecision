@@ -31,26 +31,24 @@ def get_new_values(contract):
     downpayment = purchase_price - loan_amount
 
     # Macroeconomics
-    inflation = np.round(seed.normal(loc=.025, scale=.025), decimals=6)
-    return_on_cash = np.round(seed.normal(loc=.05, scale=.025), decimals=6)
-    # return_on_cash = np.round(get_truncated(0, .06, .02, .5).rvs(), decimals=6)
-    house_appreciation = np.round(seed.normal(loc=.025, scale=.05), decimals=6)
+    inflation = np.round(seed.normal(loc=.04, scale=.025), decimals=6)
+    # treasure_return = np.round(seed.normal(loc=.06, scale=.025), decimals=6)
+    treasure_return = np.round(get_truncated(0, .06, .02, .5).rvs(), decimals=6)
+    house_appreciation = np.round(seed.normal(loc=.02, scale=.05), decimals=6)
     # house_appreciation = np.round(get_truncated(0, .06, .02, .5).rvs(), decimals=6)
-    interest_rate = np.round(seed.normal(loc=.06, scale=.05), 6)
-    real_return = np.round((return_on_cash - inflation) * (1 - .15), 6)
-    house_real_return = np.round((house_appreciation - inflation) * (1 - .15), 6)
+    financing_rate = np.round(seed.normal(loc=.08, scale=.05), 6)
+    real_return = np.round((treasure_return - inflation) * (1 - .15), 6)
+    real_house_return = np.round((house_appreciation - inflation) * (1 - .15), 6)
+    # Rental
+    rent_percentage = np.round(get_truncated(.0, .01, .0029, .5).rvs(), 6)
 
     birth1 = gen_birth(contract)
     birth2 = gen_birth(contract)
-
-    amortization_months = gen_amortization(min(birth1, birth2), contract)
-
     perc_borrower1 = np.round(seed.random_sample(), 2)
     perc_borrower2 = np.round(1 - perc_borrower1, 2)
 
-    # Rental
-    rent_percentage = np.round(get_truncated(0.0, .06, .03, .2).rvs(), 3)
+    amortization_months = gen_amortization(min(birth1, birth2), contract)
 
-    return [purchase_price, downpayment, loan_amount, inflation, return_on_cash, interest_rate, real_return,
-            birth1, birth2, house_appreciation, house_real_return,
+    return [purchase_price, downpayment, loan_amount, inflation, treasure_return, financing_rate, real_return,
+            birth1, birth2, house_appreciation, real_house_return,
             perc_borrower1, perc_borrower2, rent_percentage, amortization_months]
