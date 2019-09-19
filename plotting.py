@@ -5,6 +5,16 @@ import comparisons
 import conf
 
 
+def basic_plot_config(ax):
+    ax.spines['top'].set_visible(False)
+    ax.spines['bottom'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    ax.spines['left'].set_visible(False)
+    ax.get_xaxis().tick_bottom()
+    ax.get_yaxis().tick_left()
+    return ax
+
+
 def plot(ax):
     data = pd.read_csv(conf.PARAMS['DATA'], sep=';')
     # ax.plot(data['home_value'], label='Home value')
@@ -33,19 +43,12 @@ def plotting():
     #                                                                p.mortgage_choice,
     #                                                                p.real_return),
     #              fontsize=9, xy=(0.05, 0.67), xycoords='axes fraction', alpha=.5)
-
-    ax.spines['top'].set_visible(False)
-    ax.spines['bottom'].set_visible(False)
-    ax.spines['right'].set_visible(False)
-    ax.spines['left'].set_visible(False)
-    ax.get_xaxis().tick_bottom()
-    ax.get_yaxis().tick_left()
+    ax = basic_plot_config(ax)
     ax.yaxis.set_major_formatter(plt.FuncFormatter('${:,.0f}'.format))
-
     plt.grid(True, 'major', 'y', ls='--', lw=.5, c='k', alpha=.3)
     plt.tick_params(axis='both', which='both', bottom=False, top=False,
                     labelbottom=True, left=False, right=False, labelleft=True)
-    plt.savefig('res1.png', bbox_inches='tight')
+    plt.savefig('comparison.png', bbox_inches='tight')
     plt.show()
 
 

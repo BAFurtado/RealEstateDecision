@@ -17,8 +17,8 @@ class Comparison:
         self.params = p
 
     def save(self):
-        self.data.to_csv(self.params['DATA'], sep=';', index=False)
-        # pass
+        # self.data.to_csv(self.params['DATA'], sep=';', index=False)
+        pass
 
     def investment_return(self, amount, months, rate, title='rent_savings'):
         for i in range(int(months)):
@@ -130,7 +130,7 @@ def main(p):
     c.set_borrowers(b1, p['PERC_BORROWER1'])
     c.set_borrowers(b2, p['PERC_BORROWER2'])
 
-    c.set_mortgage(p['INTEREST_RATE'], p['AMORTIZATION_MONTHS'], p['LOAN_AMOUNT'],
+    c.set_mortgage(p['FINANCING_RATE'], p['AMORTIZATION_MONTHS'], p['LOAN_AMOUNT'],
                    p['MORTGAGE_CHOICE'])
 
     # Run schedule generation
@@ -140,12 +140,12 @@ def main(p):
     # Include rental details and investments
     rental = Rental(d)
     rental.gen_rent(p['PURCHASE_PRICE'] * p['RENT_PERCENTAGE'], p['AMORTIZATION_MONTHS'],
-                    p['HOUSE_REAL_APPRECIATION'],
+                    p['REAL_HOUSE_APPRECIATION'],
                     p['RENT_RAISING_PERIOD'])
     # Investment return includes money saved from not making mortgage payments
     d.investment_return(p['DOWNPAYMENT'], p['AMORTIZATION_MONTHS'], p['REAL_RETURN'],
                         'rent_savings')
-    d.investment_return(p['PURCHASE_PRICE'], p['AMORTIZATION_MONTHS'], p['HOUSE_REAL_APPRECIATION'],
+    d.investment_return(p['PURCHASE_PRICE'], p['AMORTIZATION_MONTHS'], p['REAL_HOUSE_APPRECIATION'],
                         'home_value')
     d.equity()
     return round(d.present_value_buying(), 2)

@@ -4,9 +4,10 @@ from numpy import arange
 
 import conf
 import generalization
+import plotting
 
 
-def plotting(values, output):
+def plotting_hyperspace(values, output):
     fig = plt.figure()
     ax = fig.add_subplot(1, 1, 1)
 
@@ -23,25 +24,19 @@ def plotting(values, output):
     legend_elements = [Patch(facecolor='green', edgecolor='green', alpha=.3, label='Rent'),
                        Patch(facecolor='red', edgecolor='red', alpha=.3, label='Buy')]
     ax.legend(handles=legend_elements + handles, frameon=False, loc="upper right",
-              bbox_to_anchor=(1, 0, 0.5, 1), title='Parameter Value Reference')
+              bbox_to_anchor=(1, 0, 0, 0), title='Parameter Value Reference')
 
     ax.set(xlabel='Multiplying Parameter Factor', ylabel='Present Value $',
            title='Comparison Rental x Ownership')
 
-    ax.spines['top'].set_visible(False)
-    ax.spines['bottom'].set_visible(False)
-    ax.spines['right'].set_visible(False)
-    ax.spines['left'].set_visible(False)
-    ax.get_xaxis().tick_bottom()
-    ax.get_yaxis().tick_left()
-
+    ax = plotting.basic_plot_config(ax)
     ax.xaxis.set_major_formatter(plt.FuncFormatter('{:.2f}x'.format))
     ax.yaxis.set_major_formatter(plt.FuncFormatter('${:,.0f}'.format))
 
     plt.grid(True, 'major', 'y', ls='--', lw=.5, c='k', alpha=.3)
     plt.tick_params(axis='both', which='both', bottom=False, top=False,
                     labelbottom=True, left=False, right=False, labelleft=True)
-    plt.savefig('res1.png', bbox_inches='tight')
+    plt.savefig('hyperspace.png', bbox_inches='tight')
     plt.show()
 
 
@@ -52,11 +47,11 @@ if __name__ == '__main__':
     # d = 'PURCHASE_PRICE'
     # e = 'DOWNPAYMENT'
     # f = 'AMORTIZATION_MONTHS'
-    # g = 'INTEREST_RATE'
+    # g = 'FINANCING_RATE'
     # h = 'REAL_RETURN'
     f = 'RENT_PERCENTAGE'
-    d = 'HOUSE_REAL_APPRECIATION'
+    d = 'REAL_HOUSE_APPRECIATION'
     e = 'REAL_RETURN'
     v, out = generalization.prepare(d, e, f)
     generalization.results(v, out)
-    plotting(v, out)
+    plotting_hyperspace(v, out)

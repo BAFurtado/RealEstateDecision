@@ -21,6 +21,8 @@ Obs5. You can save a one-time run to a table by uncommenting the save steps in `
 
 Obs6. Current implementation consider increases in RENT MARKET and HOUSE APPRECIATION are the same
 
+Obs7. SAVING option in comparisons.py needs to be set off to run `hyperspace` and `randomizing`
+
 *TODO: verify hyperspace...
 
 ## To run the model

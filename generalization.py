@@ -37,19 +37,19 @@ def check_consistency(original, override):
 
     # If testing inflation, both real return and house real appreciation will be affected
     if 'INFLATION' in override.keys():
-        override['REAL_RETURN'] = np.round((original['RETURN_ON_CASH'] - override['INFLATION'])
+        override['REAL_RETURN'] = np.round((original['TREASURE_RETURN'] - override['INFLATION'])
                                            * (1 - original['TAX']), 6)
-        override['HOUSE_REAL_APPRECIATION'] = np.round((original['RETURN_ON_CASH'] - override['INFLATION'])
+        override['REAL_HOUSE_APPRECIATION'] = np.round((original['TREASURE_RETURN'] - override['INFLATION'])
                                                        * (1 - original['TAX']), 6)
 
-    if 'RETURN_ON_CASH' in override.keys():
-        override['REAL_RETURN'] = np.round((override['RETURN_ON_CASH'] - original['INFLATION'])
+    if 'TREASURE_RETURN' in override.keys():
+        override['REAL_RETURN'] = np.round((override['TREASURE_RETURN'] - original['INFLATION'])
                                            * (1 - original['TAX']), 4)
 
     if 'TAX' in override.keys():
-        override['REAL_RETURN'] = np.round((original['RETURN_ON_CASH'] - original['INFLATION'])
+        override['REAL_RETURN'] = np.round((original['TREASURE_RETURN'] - original['INFLATION'])
                                            * (1 - override['TAX']), 4)
-        override['HOUSE_REAL_APPRECIATION'] = np.round((original['RETURN_ON_CASH'] - original['INFLATION'])
+        override['REAL_HOUSE_APPRECIATION'] = np.round((original['TREASURE_RETURN'] - original['INFLATION'])
                                                        * (1 - override['TAX']), 4)
 
     if 'AMORTIZATION_MONTHS' in override.keys():
@@ -59,7 +59,7 @@ def check_consistency(original, override):
 
 def prepare(*parameter):
     output = dict()
-    values = linspace(.5, 2, 4)
+    values = linspace(.25, 2.5, 6)
     for each in parameter:
         l0 = list()
         for v in values:
@@ -77,7 +77,7 @@ def results(values, res):
 
 if __name__ == '__main__':
     f = 'RENT_PERCENTAGE'
-    d = 'HOUSE_REAL_APPRECIATION'
+    d = 'REAL_HOUSE_APPRECIATION'
     e = 'REAL_RETURN'
     v, out = prepare(d, e, f)
     results(v, out)
