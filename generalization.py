@@ -24,30 +24,34 @@ def runs(overrides, consistency=False):
 
 # Asserting that some values that are dependent on others are consistent!
 def check_consistency(original, override):
+
+    # If testing loan_amount, then purchase price varies accordingly, keeping downpayment fixed
     if 'LOAN_AMOUNT' in override.keys():
         override['PURCHASE_PRICE'] = original['DOWNPAYMENT'] + override['LOAN_AMOUNT']
+    # If testing purchase_price, size of loan amount varies, keeping downpayment fixed
     if 'PURCHASE_PRICE' in override.keys():
         override['LOAN_AMOUNT'] = override['PURCHASE_PRICE'] - original['DOWNPAYMENT']
+    # If testing downpayment, loan_amount will vary, keeping the original purchasing price
     if 'DOWNPAYMENT' in override.keys():
         override['LOAN_AMOUNT'] = original['PURCHASE_PRICE'] - override['DOWNPAYMENT']
+
+    # If testing inflation, both real return and house real appreciation will be affected
     if 'INFLATION' in override.keys():
-        temp = np.round((original['RETURN_ON_CASH'] - override['INFLATION'])
-                                        * (1 - original['TAX']), 4)
-        override['INFLATION'] = temp
+        override['REAL_RETURN'] = np.round((original['RETURN_ON_CASH'] - override['INFLATION'])
+                                           * (1 - original['TAX']), 6)
+        override['HOUSE_REAL_APPRECIATION'] = np.round((original['RETURN_ON_CASH'] - override['INFLATION'])
+                                                       * (1 - original['TAX']), 6)
+
     if 'RETURN_ON_CASH' in override.keys():
         override['REAL_RETURN'] = np.round((override['RETURN_ON_CASH'] - original['INFLATION'])
-                                        * (1 - original['TAX']), 4)
+                                           * (1 - original['TAX']), 4)
+
     if 'TAX' in override.keys():
         override['REAL_RETURN'] = np.round((original['RETURN_ON_CASH'] - original['INFLATION'])
-                                        * (1 - override['TAX']), 4)
-    if 'REAL_RETURN' in override.keys():
-        temp = np.round((override['REAL_RETURN'] + original['INFLATION'])
-                                        / (1 - original['TAX']), 4)
-        override['REAL_RETURN'] = temp
-    if 'HOUSE_REAL_APPRECIATION' in override.keys():
-        temp = np.round((override['HOUSE_REAL_APPRECIATION'] + original['INFLATION'])
-                                        / (1 - original['TAX']), 4)
-        override['HOUSE_REAL_APPRECIATION'] = temp
+                                           * (1 - override['TAX']), 4)
+        override['HOUSE_REAL_APPRECIATION'] = np.round((original['RETURN_ON_CASH'] - original['INFLATION'])
+                                                       * (1 - override['TAX']), 4)
+
     if 'AMORTIZATION_MONTHS' in override.keys():
         override['AMORTIZATION_MONTHS'] = int(override['AMORTIZATION_MONTHS'])
     return override

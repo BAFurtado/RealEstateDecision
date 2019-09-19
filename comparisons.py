@@ -61,11 +61,11 @@ class Rental:
         self.data = base.data
         self.params = base.params
 
-    def gen_rent(self, rent, months, inflation, period_adjustment):
+    def gen_rent(self, rent, months, appreciation, period_adjustment):
         for i in range(int(months)):
             self.data.loc[i, 'rent'] = round(rent, 2)
             if (i % (period_adjustment - 1)) == 0 and i > 0:
-                rent *= (1 + inflation)
+                rent *= (1 + appreciation)
         # self.data.to_csv(self.params['DATA'], sep=';', index=False)
 
 
@@ -141,7 +141,8 @@ def main(p):
 
     # Include rental details and investments
     rental = Rental(d)
-    rental.gen_rent(p['PURCHASE_PRICE'] * p['RENT_PERCENTAGE'], p['AMORTIZATION_MONTHS'], p['INFLATION'],
+    rental.gen_rent(p['PURCHASE_PRICE'] * p['RENT_PERCENTAGE'], p['AMORTIZATION_MONTHS'],
+                    p['HOUSE_REAL_APPRECIATION'],
                     p['RENT_RAISING_PERIOD'])
     # Investment return includes money saved from not making mortgage payments
     d.investment_return(p['DOWNPAYMENT'], p['AMORTIZATION_MONTHS'], p['REAL_RETURN'],
