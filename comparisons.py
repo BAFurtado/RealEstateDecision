@@ -17,8 +17,8 @@ class Comparison:
         self.params = p
 
     def save(self):
-        # self.data.to_csv(self.params['DATA'], sep=';', index=False)
-        pass
+        self.data.to_csv(self.params['DATA'], sep=';', index=False)
+        # pass
 
     def investment_return(self, amount, months, rate, title='rent_savings'):
         for i in range(int(months)):
@@ -28,13 +28,12 @@ class Comparison:
                 if title == 'rent_savings':
                     # Increase the amount every month buy the difference between renting and paying mortgage
                     amount += self.save_rent_different(i)
-                    # Descount annual administration fees
+                    # Discount annual administration fees
                     if i % 12 == 0:
                         amount *= (1 - self.params['CUSTODY_FEE'])
                 # Either renting or paying mortgage there is a house appreciation or a capital return
                 amount *= 1 + monthly_rate(rate)
                 self.data.loc[i, title] = amount
-        self.save()
 
     def save_rent_different(self, j):
         return self.data.loc[j, 'payment'] - self.data.loc[j, 'rent']
@@ -66,7 +65,6 @@ class Rental:
             self.data.loc[i, 'rent'] = round(rent, 2)
             if (i % (period_adjustment - 1)) == 0 and i > 0:
                 rent *= (1 + appreciation)
-        # self.data.to_csv(self.params['DATA'], sep=';', index=False)
 
 
 class Borrower:
