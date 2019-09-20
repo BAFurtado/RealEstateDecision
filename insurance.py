@@ -35,9 +35,9 @@ if __name__ == '__main__':
     for i in range(100):
         original_value = 1038000
         bal = 157565.05
-        contr = datetime.date(2019, 9, 1)
-        b1 = datetime.date(2079, 9, 1)
-        b2 = datetime.date(2089, 9, 1)
+        contr = datetime.date(2019, 9, 17)
+        b1 = datetime.date(1969, 9, 23)
+        b2 = datetime.date(1970, 9, 1)
         current_date = datetime.date(2029, 9, 1)
         p1 = .8601
         p2 = .1399

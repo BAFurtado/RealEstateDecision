@@ -17,8 +17,8 @@ class Comparison:
         self.params = p
 
     def save(self):
-        # self.data.to_csv(self.params['DATA'], sep=';', index=False)
-        pass
+        self.data.to_csv(self.params['DATA'], sep=';', index=False)
+        # pass
 
     def investment_return(self, amount, months, rate, title='rent_savings'):
         for i in range(int(months)):
@@ -38,6 +38,14 @@ class Comparison:
     def save_rent_different(self, j):
         return self.data.loc[j, 'payment'] - self.data.loc[j, 'rent']
 
+    def tax_capital_gains(self):
+        # Taxes apply to the difference between downpayment plus full installment payments and original home value
+        total_payment = sum(self.data.loc[:, 'payment']) + self.data.loc[0, 'rent_savings']
+        if total_payment < self.data.loc[self.params['AMORTIZATION_MONTHS'] - 1, 'home_value']:
+            return (self.data.loc[self.params['AMORTIZATION_MONTHS'] - 1, 'home_value'] - total_payment) \
+                   * self.params['TAX']
+        return 0
+
     def equity(self):
         self.data.loc[:, 'equity'] = self.data.loc[:, 'home_value'] - self.data.loc[:, 'balance']
         self.selling()
@@ -52,6 +60,7 @@ class Comparison:
                   self.params['AMORTIZATION_MONTHS'],
                   0,
                   self.data.loc[self.params['AMORTIZATION_MONTHS'] - 1, 'purchase_savings'] -
+                  self.tax_capital_gains() -
                   self.data.loc[self.params['AMORTIZATION_MONTHS'] - 1, 'rent_savings'])
 
 

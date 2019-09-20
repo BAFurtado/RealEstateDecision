@@ -55,7 +55,7 @@ def plot_hist(out):
     legend_elements = [Patch(facecolor='green', edgecolor='green', alpha=.3, label='Rent'),
                        Patch(facecolor='red', edgecolor='red', alpha=.3, label='Buy')]
     ax.legend(handles=legend_elements, frameon=False, loc='best', title='Optimal decision')
-    plt.title('Histogram of comparison buy x rend with randomized parameters')
+    plt.title('Histogram of comparison buy x rent with randomized parameters')
     plt.grid(True, 'major', 'y', ls='--', lw=.5, c='k', alpha=.3)
     plt.tick_params(axis='both', which='both', bottom=True, top=False,
                     labelbottom=True, left=False, right=False, labelleft=True)

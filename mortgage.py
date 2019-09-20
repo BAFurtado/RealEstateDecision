@@ -1,5 +1,5 @@
 """
-The foundations of the code comes from:
+The foundations of this module code comes from:
 https://github.com/jbmohler/mortgage/blob/master/mortgage.py
 Authored by: Joel B. Mohler
 However, function have been changed to fit the Brazilian SAC and PRICE mortgage systems of amortization
