@@ -20,8 +20,13 @@ def gen_amortization(birth, contract):
     # Amortization is conditional on age and contract date
     amortization = nr.randint(60, 360)
     # Checking to see if oldest borrower at the end of contract is above age limit of 80 years old
-    while (birth + relativedelta(years=80) < contract + relativedelta(months=amortization)) is True:
+    count = 0
+    while (birth + relativedelta(years=79) < contract + relativedelta(months=amortization)) is True:
         amortization = nr.randint(60, 360)
+        count += 1
+        if count > 200:
+            amortization = 60
+            break
     return amortization
 
 

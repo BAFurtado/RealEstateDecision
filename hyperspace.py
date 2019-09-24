@@ -24,7 +24,7 @@ def plotting_hyperspace(values, output):
     legend_elements = [Patch(facecolor='green', edgecolor='green', alpha=.3, label='Rent'),
                        Patch(facecolor='red', edgecolor='red', alpha=.3, label='Buy')]
     ax.legend(handles=legend_elements + handles, frameon=False, loc="upper right",
-              bbox_to_anchor=(1, 0, 0, 0), title='Parameter Value Reference')
+              bbox_to_anchor=(1.2, 0, 0.5, 1), title='Parameter Value Reference')
 
     ax.set(xlabel='Multiplying Parameter Factor', ylabel='Present Value $',
            title='Comparison Rental x Ownership')
@@ -42,7 +42,7 @@ def plotting_hyperspace(values, output):
 
 if __name__ == '__main__':
     # a = 'RENT_PERCENTAGE'
-    # b = 'INFLATION'
+    b = 'INFLATION'
     # c = 'LOAN_AMOUNT'
     # d = 'PURCHASE_PRICE'
     # e = 'DOWNPAYMENT'
@@ -52,6 +52,6 @@ if __name__ == '__main__':
     f = 'RENT_PERCENTAGE'
     d = 'REAL_HOUSE_APPRECIATION'
     e = 'REAL_RETURN'
-    v, out = generalization.prepare(d, e, f)
+    v, out = generalization.prepare(b, d, e, f)
     generalization.results(v, out)
     plotting_hyperspace(v, out)

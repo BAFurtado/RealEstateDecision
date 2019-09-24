@@ -20,11 +20,8 @@ Obs2. There is no income tax deduction for mortgage interest paid
 
 Obs3. Taxes of 15% apply both in cash gains as well as increase in home values
 
-Obs4. Years of payment plus age at signature cannot exceed 80 years. Thus, setting maximum age at 69
-for contract day at 2019 and mortgage of maximum 30 years. Adjust accordingly.
+Obs4. Years of payment plus age at signature cannot exceed 80 years. Thus, setting maximum age at 49 for contract day at 2019 and mortgage of maximum 30 years. Adjust accordingly.
 
-Obs5. You can save a one-time run to a table by uncommenting the save steps in `comparisons.py`
+Obs5. You can save a one-time run to a table by uncommenting the save steps in `comparisons.py`. SAVING option in comparisons.py needs to be set off to run `hyperspace` and `randomizing`
 
 Obs6. Current implementation consider increases in RENT MARKET and HOUSE APPRECIATION are the same
-
-Obs7. SAVING option in comparisons.py needs to be set off to run `hyperspace` and `randomizing`
