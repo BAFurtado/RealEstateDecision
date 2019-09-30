@@ -15,10 +15,11 @@ MONTHS_IN_YEAR = 12
 
 
 class Mortgage:
-    def __init__(self, interest, months, amount, choice='sac'):
+    def __init__(self, interest, months, amount, correction, choice='sac'):
         self._interest = interest
         self._months = months
         self._amount = amount
+        self._correction = correction
         self._choice = choice.lower()
 
     def rate(self):
@@ -26,6 +27,9 @@ class Mortgage:
 
     def monthly_rate(self):
         return (1 + self.rate()) ** (1 / MONTHS_IN_YEAR) - 1
+
+    def monthly_correction(self):
+        return (1 + self._correction) ** (1 / MONTHS_IN_YEAR) - 1
 
     def month_growth(self):
         return 1 + self._interest / MONTHS_IN_YEAR
@@ -42,7 +46,14 @@ class Mortgage:
     def amount(self):
         return self._amount
 
+    def monetary_correction(self):
+        self._amount *= (1 + self.monthly_correction())
+
+    def get_monetary_correction(self):
+        return self._amount * self.monthly_correction()
+
     def monthly_payment(self):
+        self.monetary_correction()
         interest = float(self.amount()) * self.monthly_rate()
         if self._choice == 'price':
             return pmt(self.monthly_rate(), self.loan_months(), -self.amount())
@@ -93,13 +104,14 @@ def main():
     parser.add_argument('-i', '--interest', default=9.4, dest='interest')
     parser.add_argument('-y', '--loan-years', default=20, dest='years')
     parser.add_argument('-m', '--loan-months', default=None, dest='months')
+    parser.add_argument('-c', '--correction', default=0.01, dest='correction')
     parser.add_argument('-a', '--amount', default=450000, dest='amount')
     args = parser.parse_args()
 
     if args.months:
-        m = Mortgage(float(args.interest) / 100, float(args.months), args.amount)
+        m = Mortgage(float(args.interest) / 100, float(args.months), args.amount, args.correction)
     else:
-        m = Mortgage(float(args.interest) / 100, float(args.years) * MONTHS_IN_YEAR, args.amount)
+        m = Mortgage(float(args.interest) / 100, float(args.years) * MONTHS_IN_YEAR, args.amount, args.correction)
 
     print_summary(m)
 
