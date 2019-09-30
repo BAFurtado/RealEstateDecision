@@ -93,11 +93,12 @@ class Contract:
     def set_borrowers(self, b, percentage):
         self.borrowers[b] = percentage
 
-    def set_mortgage(self, interest, months, loan, choice):
-        self.mortgage = Mortgage(interest, months, loan, choice)
+    def set_mortgage(self, interest, months, loan, correction, choice):
+        self.mortgage = Mortgage(interest, months, loan, correction, choice)
 
     def gen_schedule(self):
         for i, payment in enumerate(self.mortgage.monthly_payment_schedule()):
+            self.data.loc[i, 'correction'] = round(self.mortgage.get_monetary_correction(), 2)
             self.data.loc[i, 'amortization'] = round(payment[0], 2)
             self.data.loc[i, 'interest'] = round(payment[1], 2)
 
@@ -107,8 +108,8 @@ class Contract:
             self.data.loc[i, 'balance'] = self.data.loc[i - 1, 'balance'] - self.data.loc[i, 'amortization']
         self.data.loc[:, 'dfi'] = round(self.dfi(), 2)
         self.mip()
-        self.data.loc[:, 'payment'] = self.data.amortization + self.data.interest \
-                                               + self.data.dfi + self.data.mip
+        self.data.loc[:, 'payment'] = self.data.amortization + self.data.interest + self.data.dfi + self.data.mip \
+                                      + self.data.correction
         # self.data.to_csv(self.params['DATA'], sep=';', index=False)
 
     def dfi(self):
@@ -139,8 +140,12 @@ def main(p):
     c.set_borrowers(b1, p['PERC_BORROWER1'])
     c.set_borrowers(b2, p['PERC_BORROWER2'])
 
-    c.set_mortgage(p['FINANCING_RATE'], p['AMORTIZATION_MONTHS'], p['LOAN_AMOUNT'],
-                   p['MORTGAGE_CHOICE'])
+    if p['MORTGAGE_CHOICE'] == 'sac_inflation':
+        correction = p['INFLATION']
+    else:
+        correction = p['REFERENCIAL_FEE']
+
+    c.set_mortgage(p['FINANCING_RATE'], p['AMORTIZATION_MONTHS'], p['LOAN_AMOUNT'], correction, p['MORTGAGE_CHOICE'])
 
     # Run schedule generation
     c.gen_schedule()
