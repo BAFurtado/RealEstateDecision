@@ -1,14 +1,14 @@
 import datetime
 
 # Purchasing
-PURCHASE_PRICE = 650000
-DOWNPAYMENT = 420000
+PURCHASE_PRICE = 500000
+DOWNPAYMENT = 0
 LOAN_AMOUNT = PURCHASE_PRICE - DOWNPAYMENT
 HOUSE_APPRECIATION = .06
 
-FINANCING_RATE = .075
+FINANCING_RATE = .0495
 
-# Alternatives: 'price', 'sac' or 'sac_inflation'
+# Alternatives: 'price', 'sac'
 MORTGAGE_CHOICE = 'sac'
 SELLING_COST = .06
 CONTRACT_DATE = datetime.date(2014, 1, 20)
@@ -25,13 +25,15 @@ INFLATION = .04
 TREASURE_RETURN = .05
 
 # Adjustment fees
-REFERENCIAL_FEE = 0
+# If correction should include inflation, add below
+REFERENCIAL_FEE = INFLATION
+
 
 # Rental -- about 3.5% of home value per year
 RENT_PERCENTAGE = .0029
 RENT_RAISING_PERIOD = 12
 
-AMORTIZATION_MONTHS = 182
+AMORTIZATION_MONTHS = 240
 
 TAX = .15
 CUSTODY_FEE = .0003

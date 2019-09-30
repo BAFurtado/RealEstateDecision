@@ -52,39 +52,20 @@ class Mortgage:
     def get_monetary_correction(self):
         return self._amount * self.monthly_correction()
 
-    def monthly_payment(self):
-        self.monetary_correction()
-        interest = float(self.amount()) * self.monthly_rate()
-        if self._choice == 'price':
-            return pmt(self.monthly_rate(), self.loan_months(), -self.amount())
-        else:
-            amortization = float(self.amount()) / self.loan_months()
-            return interest + amortization
-
-    def annual_payment(self):
-        return self.monthly_payment() * MONTHS_IN_YEAR
-
     def total_payout(self):
-        if self._choice == 'price':
-            return self.monthly_payment() * self.loan_months()
-        else:
-            return sum(month[0] + month[1]
-                       for month in islice(self.monthly_payment_schedule(),
-                                           int(self.loan_months())))
+        return sum(month[0] + month[1]
+                   for month in islice(self.monthly_payment_schedule(), int(self.loan_months())))
 
     def monthly_payment_schedule(self):
-        monthly = self.monthly_payment()
-        balance = self.amount()
-        while True:
-            interest = balance * self.monthly_rate()
-            if balance <= 0:
-                break
+        for i in range(self.loan_months()):
+            self.monetary_correction()
+            interest = self._amount * self.monthly_rate()
             if self._choice == 'price':
-                principle = monthly - interest
+                principle = pmt(self.monthly_rate(), self.loan_months() - i, -self.amount(), when=1) - interest
             else:
-                principle = self.amount() / self.loan_months()
+                principle = self._amount / (self.loan_months() - i)
             yield principle, interest
-            balance -= principle
+            self._amount -= principle
 
 
 def print_summary(m):
@@ -94,8 +75,6 @@ def print_summary(m):
     print('{}:  {:.2f}'.format('Payoff Years', m.loan_years()))
     print('{}:  {:.2f}'.format('Payoff Months', m.loan_months()))
     print('{}:  {:.2f}'.format('Amount', m.amount()))
-    print('{}:  {:.2f}'.format('Monthly Payment', m.monthly_payment()))
-    print('{}:  {:.2f}'.format('Annual Payment', m.annual_payment()))
     print('{}:  {:.2f}'.format('Total Payout', m.total_payout()))
 
 
