@@ -6,7 +6,7 @@ DOWNPAYMENT = 0
 LOAN_AMOUNT = PURCHASE_PRICE - DOWNPAYMENT
 HOUSE_APPRECIATION = .06
 
-FINANCING_RATE = .0495
+FINANCING_RATE = .0795
 
 # Alternatives: 'price', 'sac'
 MORTGAGE_CHOICE = 'sac'
@@ -26,7 +26,8 @@ TREASURE_RETURN = .05
 
 # Adjustment fees
 # If correction should include inflation, add below
-REFERENCIAL_FEE = INFLATION
+REFERENCIAL_FEE = 0
+# REFERENCIAL_FEE = INFLATION
 
 
 # Rental -- about 3.5% of home value per year

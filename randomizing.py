@@ -66,7 +66,7 @@ def plot_hist(out):
 def main(size):
     register_matplotlib_converters()
     l0 = creating_params(size)
-    plot_params(l0)
+    # plot_params(l0)
     out = generalization.runs(l0)
     print(out)
     np.save('output_randomization', out)
@@ -74,5 +74,5 @@ def main(size):
 
 
 if __name__ == '__main__':
-    s = 1000
+    s = 100
     main(s)
