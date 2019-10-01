@@ -42,7 +42,7 @@ def plotting_hyperspace(values, output):
 
 
 if __name__ == '__main__':
-    # a = 'RENT_PERCENTAGE'
+    a = 'RENT_PERCENTAGE'
     b = 'INFLATION'
     # c = 'LOAN_AMOUNT'
     # d = 'PURCHASE_PRICE'
@@ -50,9 +50,8 @@ if __name__ == '__main__':
     # f = 'AMORTIZATION_MONTHS'
     # g = 'FINANCING_RATE'
     # h = 'REAL_RETURN'
-    f = 'RENT_PERCENTAGE'
     d = 'REAL_HOUSE_APPRECIATION'
     e = 'REAL_RETURN'
-    v, out = generalization.prepare(b, d, e, f)
+    v, out = generalization.prepare(a, b, d, e)
     generalization.results(v, out)
     plotting_hyperspace(v, out)
