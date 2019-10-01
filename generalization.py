@@ -35,6 +35,12 @@ def check_consistency(original, override):
     if 'DOWNPAYMENT' in override.keys():
         override['LOAN_AMOUNT'] = original['PURCHASE_PRICE'] - override['DOWNPAYMENT']
 
+    if 'AMORTIZATION_MONTHS' in override.keys():
+        if override['AMORTIZATION_MONTHS'] < 60:
+            override['AMORTIZATION_MONTHS'] = 60
+        elif override['AMORTIZATION_MONTHS'] > 360:
+            override['AMORTIZATION_MONTHS'] = 360
+
     # If testing inflation, both real return and house real appreciation will be affected
     if 'INFLATION' in override.keys():
         override['REAL_RETURN'] = np.round((original['TREASURE_RETURN'] - override['INFLATION'])

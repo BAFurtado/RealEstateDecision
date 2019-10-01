@@ -15,7 +15,7 @@ def plotting_hyperspace(values, output):
         ax.plot(values, output[key], label='{}: {}'.format(key, conf.PARAMS[key]), alpha=1, lw=1.1)
 
     x = arange(values.min(), values.max(), .01)
-    ax.fill_between(x, max([max(i) for i in output.values()]), 0, where=max(max(output.values())) > 0,
+    ax.fill_between(x, max([max(i) for i in output.values()]), 0, where=max([max(i) for i in output.values()]) > 0,
                     facecolor='green', alpha=.3)
     ax.fill_between(x, 0, min([min(i) for i in output.values()]), where=min([min(i) for i in output.values()]) < 0,
                     facecolor='red', alpha=.3)
@@ -49,9 +49,8 @@ if __name__ == '__main__':
     # e = 'DOWNPAYMENT'
     # f = 'AMORTIZATION_MONTHS'
     # g = 'FINANCING_RATE'
-    # h = 'REAL_RETURN'
-    d = 'REAL_HOUSE_APPRECIATION'
-    e = 'REAL_RETURN'
-    v, out = generalization.prepare(a, b, d, e)
+    h = 'REAL_RETURN'
+    i = 'REAL_HOUSE_APPRECIATION'
+    v, out = generalization.prepare(a, b, h, i)
     generalization.results(v, out)
     plotting_hyperspace(v, out)
