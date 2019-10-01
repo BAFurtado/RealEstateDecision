@@ -17,8 +17,8 @@ class Comparison:
         self.params = p
 
     def save(self):
-        self.data.to_csv(self.params['DATA'], sep=';', index=False)
-        # pass
+        if self.params['DATA'] is not None:
+            self.data.to_csv(self.params['DATA'], sep=';', index=False)
 
     def investment_return(self, amount, months, rate, title='rent_savings'):
         for i in range(int(months)):

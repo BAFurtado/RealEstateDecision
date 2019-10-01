@@ -25,3 +25,5 @@ Obs4. Years of payment plus age at signature cannot exceed 80 years. Thus, setti
 Obs5. You can save a one-time run to a table by uncommenting the save steps in `comparisons.py`. SAVING option in comparisons.py needs to be set off to run `hyperspace` and `randomizing`
 
 Obs6. Current implementation consider increases in RENT MARKET and HOUSE APPRECIATION are the same
+
+Obs7. Default implementation uses monetary correction (TR -- Referencial Fee) as 0
