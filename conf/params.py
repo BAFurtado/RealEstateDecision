@@ -43,5 +43,5 @@ REAL_RETURN = round((TREASURE_RETURN - INFLATION) * (1 - TAX), 6)
 REAL_HOUSE_APPRECIATION = round((HOUSE_APPRECIATION - INFLATION), 6)
 
 # To save, give data a path and a name
-# DATA = None
-DATA = 'data.csv'
+DATA = None
+# DATA = 'data.csv'
