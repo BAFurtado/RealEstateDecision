@@ -2,6 +2,7 @@ from collections import defaultdict
 
 import matplotlib.pyplot as plt
 import matplotlib.ticker as plticker
+import matplotlib.dates as mdates
 import numpy as np
 from matplotlib.patches import Patch
 from pandas.plotting import register_matplotlib_converters
@@ -28,23 +29,39 @@ def creating_params(size):
     return lst
 
 
-def plot_params(list_dict):
+def plot_params(list_dict, bundled=True):
     joined_params = defaultdict(list)
     for each in list_dict:
         for key in each.keys():
             joined_params[key].append(each[key])
-    for k in joined_params.keys():
-        plt.hist(joined_params[k], bins=50)
-        plt.title(k)
-        plt.savefig('params_variation/{}.png'.format(k))
-        plt.show()
+    if bundled:
+        fig, axs = plt.subplots(5, 3, squeeze=False, figsize=(20, 15))
+        plt.locator_params(nbins=3)
+        for i, ks in enumerate(joined_params.keys()):
+            axs[i % 5, i % 3].hist(joined_params[ks], bins=50)
+            axs[i % 5, i % 3].set_title(ks, fontsize=7)
+            if 'BIRTH' in ks:
+                axs[i % 5, i % 3].xaxis.set_major_formatter(mdates.DateFormatter('%Y'))
+        fig.savefig('params_variation/{}.png'.format('Parameters variation'))
+        fig.savefig('params_variation/{}.pdf'.format('Parameters variation'), format='pdf', transparent=True)
+    else:
+        for k in joined_params.keys():
+            plt.hist(joined_params[k], bins=50)
+            plt.title(k)
+            plt.savefig('params_variation/{}.png'.format(k))
+            plt.savefig('params_variation/{}.pdf'.format(k), format='pdf', transparent=True)
 
 
 def plot_hist(out):
     fig = plt.figure()
     ax = fig.add_subplot(1, 1, 1)
+
+    # Pìcking different colors for the results
     rent = [o for o in out if o >= 0]
     buy = [o for o in out if o < 0]
+
+    # Make bins' sizes more adequate
+    # TODO
     ax.hist(rent, bins=30, color='green', alpha=.3)
     ax.hist(buy, bins=70, color='red', alpha=.3)
     ax = plotting.basic_plot_config(ax)
@@ -66,11 +83,11 @@ def plot_hist(out):
 def main(size):
     register_matplotlib_converters()
     l0 = creating_params(size)
-    # plot_params(l0)
-    out = generalization.runs(l0)
-    print(out)
-    np.save('output_randomization', out)
-    plot_hist(out)
+    plot_params(l0, bundled=True)
+    # out = generalization.runs(l0)
+    # print(out)
+    # np.save('output_randomization', out)
+    # plot_hist(out)
 
 
 if __name__ == '__main__':

@@ -24,7 +24,7 @@ def gen_amortization(birth, contract):
     while (birth + relativedelta(years=79) < contract + relativedelta(months=amortization)) is True:
         amortization = nr.randint(60, 360)
         count += 1
-        if count > 200:
+        if count > 360:
             amortization = 60
             break
     return amortization
