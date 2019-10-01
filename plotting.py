@@ -49,6 +49,7 @@ def plotting():
     plt.tick_params(axis='both', which='both', bottom=False, top=False,
                     labelbottom=True, left=False, right=False, labelleft=True)
     plt.savefig('comparison.png', bbox_inches='tight')
+    plt.savefig('comparison.pdf', format='pdf', transparent=True, bbox_inches='tight')
     plt.show()
 
 

@@ -59,7 +59,7 @@ def check_consistency(original, override):
 
 def prepare(*parameter):
     output = dict()
-    values = linspace(.25, 2.5, 6)
+    values = linspace(.25, 2, 8)
     for each in parameter:
         l0 = list()
         for v in values:
