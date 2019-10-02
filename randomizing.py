@@ -64,8 +64,8 @@ def plot_hist(out):
 
     # Make bins' sizes more adequate
     # TODO
-    ax.hist(rent, bins=30, color='green', alpha=.3)
-    ax.hist(buy, bins=70, color='red', alpha=.3)
+    ax.hist(rent, bins=15, color='green', alpha=.3, range=(0, 3000000))
+    ax.hist(buy, bins=30, color='red', alpha=.3, range=(-7500000, 0))
     ax = plotting.basic_plot_config(ax)
     # loc = plticker.MultipleLocator(base=1.5e6)  # this locator puts ticks at regular intervals
     # ax.xaxis.set_major_locator(loc)
@@ -92,9 +92,16 @@ def main(size):
     np.save('output_randomization', out)
     plot_hist(out)
     percentage = len([i for i in out if i > 0])
-    print('Renting is a better option in {:.2f}% of the {} cases simulated'.format(percentage, size))
+    print('Renting is a better option in {:.2f}% of the {} cases simulated'.format(percentage/size * 100, size))
+
+
+def make_plot():
+    # Redo the plot using output
+    out = np.load('output_randomization.npy')
+    plot_hist(out)
 
 
 if __name__ == '__main__':
     s = 20000
     main(s)
+    # make_plot()
