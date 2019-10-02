@@ -51,7 +51,7 @@ def plot_bundled(list_dict):
             axs[i % 5, i % 3].xaxis.set_major_formatter(mdates.DateFormatter('%Y'))
     plt.savefig('params_variation/{}.png'.format('Parameters variation'))
     plt.savefig('params_variation/{}.pdf'.format('Parameters variation'), format='pdf', transparent=True)
-    plt.show()
+    # plt.show()
 
 
 def plot_hist(out):
@@ -80,7 +80,7 @@ def plot_hist(out):
                     labelbottom=True, left=False, right=False, labelleft=True)
     plt.savefig('randomization.png', bbox_inches='tight')
     plt.savefig('randomization.pdf', format='pdf', transparent=True, bbox_inches='tight')
-    # plt.show()
+    plt.show()
 
 
 def main(size):
@@ -91,11 +91,10 @@ def main(size):
     print(out)
     np.save('output_randomization', out)
     plot_hist(out)
-    perc = len([i for i in out if i > 0])
-    print('Renting is a better option in {:.2f}% of the {} cases simulated'.format(perc, size))
-    return out
+    percentage = len([i for i in out if i > 0])
+    print('Renting is a better option in {:.2f}% of the {} cases simulated'.format(percentage, size))
 
 
 if __name__ == '__main__':
-    s = 100
-    o = main(s)
+    s = 20000
+    main(s)
