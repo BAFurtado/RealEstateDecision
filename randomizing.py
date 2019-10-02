@@ -1,8 +1,7 @@
 from collections import defaultdict
 
-import matplotlib.pyplot as plt
-import matplotlib.ticker as plticker
 import matplotlib.dates as mdates
+import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.patches import Patch
 from pandas.plotting import register_matplotlib_converters
@@ -43,6 +42,7 @@ def plot_bundled(list_dict):
             axs[i % 5, i % 3].xaxis.set_major_formatter(mdates.DateFormatter('%Y'))
     fig.savefig('params_variation/{}.png'.format('Parameters variation'))
     fig.savefig('params_variation/{}.pdf'.format('Parameters variation'), format='pdf', transparent=True)
+    plt.show()
 
 
 def plot_params(list_dict):
@@ -54,7 +54,8 @@ def plot_params(list_dict):
         plt.hist(joined_params[k], bins=50)
         plt.title(k)
         plt.savefig('params_variation/{}.png'.format(k))
-        plt.show()
+        plt.savefig('params_variation/{}.pdf'.format(k), format='pdf', transparent=True)
+        # plt.show()
 
 
 def plot_hist(out):
@@ -81,8 +82,9 @@ def plot_hist(out):
     plt.grid(True, 'major', 'y', ls='--', lw=.5, c='k', alpha=.3)
     plt.tick_params(axis='both', which='both', bottom=True, top=False,
                     labelbottom=True, left=False, right=False, labelleft=True)
-    plt.savefig('randomization', bbox_inches='tight')
-    plt.show()
+    plt.savefig('randomization.png', bbox_inches='tight')
+    plt.savefig('randomization.pdf', format='pdf', transparent=True, bbox_inches='tight')
+    # plt.show()
 
 
 def main(size):
@@ -90,12 +92,15 @@ def main(size):
     l0 = creating_params(size)
     plot_params(l0)
     plot_bundled(l0)
-    # out = generalization.runs(l0)
-    # print(out)
-    # np.save('output_randomization', out)
-    # plot_hist(out)
+    out = generalization.runs(l0)
+    print(out)
+    np.save('output_randomization', out)
+    plot_hist(out)
+    perc = len([i for i in out if i > 0])
+    print('Renting is a better option in {:.2f}% of the {} cases simulated'.format(perc, size))
+    return out
 
 
 if __name__ == '__main__':
-    s = 100
-    main(s)
+    s = 10000
+    o = main(s)
