@@ -33,6 +33,15 @@ def plot_bundled(list_dict):
     for each in list_dict:
         for key in each.keys():
             joined_params[key].append(each[key])
+    for k in joined_params.keys():
+        fig, ax = plt.subplots()
+        if 'BIRTH' in k:
+            ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y'))
+        ax.hist(joined_params[k], bins=50)
+        ax.set_title(k)
+        plt.savefig('params_variation/{}.png'.format(k))
+        plt.savefig('params_variation/{}.pdf'.format(k), format='pdf', transparent=True)
+        # plt.show()
     fig, axs = plt.subplots(5, 3, squeeze=False, figsize=(20, 15))
     plt.locator_params(nbins=3)
     for i, ks in enumerate(joined_params.keys()):
@@ -40,22 +49,9 @@ def plot_bundled(list_dict):
         axs[i % 5, i % 3].set_title(ks, fontsize=7)
         if 'BIRTH' in ks:
             axs[i % 5, i % 3].xaxis.set_major_formatter(mdates.DateFormatter('%Y'))
-    fig.savefig('params_variation/{}.png'.format('Parameters variation'))
-    fig.savefig('params_variation/{}.pdf'.format('Parameters variation'), format='pdf', transparent=True)
+    plt.savefig('params_variation/{}.png'.format('Parameters variation'))
+    plt.savefig('params_variation/{}.pdf'.format('Parameters variation'), format='pdf', transparent=True)
     plt.show()
-
-
-def plot_params(list_dict):
-    joined_params = defaultdict(list)
-    for each in list_dict:
-        for key in each.keys():
-            joined_params[key].append(each[key])
-    for k in joined_params.keys():
-        plt.hist(joined_params[k], bins=50)
-        plt.title(k)
-        plt.savefig('params_variation/{}.png'.format(k))
-        plt.savefig('params_variation/{}.pdf'.format(k), format='pdf', transparent=True)
-        # plt.show()
 
 
 def plot_hist(out):
@@ -90,7 +86,6 @@ def plot_hist(out):
 def main(size):
     register_matplotlib_converters()
     l0 = creating_params(size)
-    plot_params(l0)
     plot_bundled(l0)
     out = generalization.runs(l0)
     print(out)
@@ -102,5 +97,5 @@ def main(size):
 
 
 if __name__ == '__main__':
-    s = 10000
+    s = 100
     o = main(s)
