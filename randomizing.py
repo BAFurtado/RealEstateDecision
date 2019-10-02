@@ -29,27 +29,32 @@ def creating_params(size):
     return lst
 
 
-def plot_params(list_dict, bundled=True):
+def plot_bundled(list_dict):
     joined_params = defaultdict(list)
     for each in list_dict:
         for key in each.keys():
             joined_params[key].append(each[key])
-    if bundled:
-        fig, axs = plt.subplots(5, 3, squeeze=False, figsize=(20, 15))
-        plt.locator_params(nbins=3)
-        for i, ks in enumerate(joined_params.keys()):
-            axs[i % 5, i % 3].hist(joined_params[ks], bins=50)
-            axs[i % 5, i % 3].set_title(ks, fontsize=7)
-            if 'BIRTH' in ks:
-                axs[i % 5, i % 3].xaxis.set_major_formatter(mdates.DateFormatter('%Y'))
-        fig.savefig('params_variation/{}.png'.format('Parameters variation'))
-        fig.savefig('params_variation/{}.pdf'.format('Parameters variation'), format='pdf', transparent=True)
-    else:
-        for k in joined_params.keys():
-            plt.hist(joined_params[k], bins=50)
-            plt.title(k)
-            plt.savefig('params_variation/{}.png'.format(k))
-            plt.savefig('params_variation/{}.pdf'.format(k), format='pdf', transparent=True)
+    fig, axs = plt.subplots(5, 3, squeeze=False, figsize=(20, 15))
+    plt.locator_params(nbins=3)
+    for i, ks in enumerate(joined_params.keys()):
+        axs[i % 5, i % 3].hist(joined_params[ks], bins=50)
+        axs[i % 5, i % 3].set_title(ks, fontsize=7)
+        if 'BIRTH' in ks:
+            axs[i % 5, i % 3].xaxis.set_major_formatter(mdates.DateFormatter('%Y'))
+    fig.savefig('params_variation/{}.png'.format('Parameters variation'))
+    fig.savefig('params_variation/{}.pdf'.format('Parameters variation'), format='pdf', transparent=True)
+
+
+def plot_params(list_dict):
+    joined_params = defaultdict(list)
+    for each in list_dict:
+        for key in each.keys():
+            joined_params[key].append(each[key])
+    for k in joined_params.keys():
+        plt.hist(joined_params[k], bins=50)
+        plt.title(k)
+        plt.savefig('params_variation/{}.png'.format(k))
+        plt.show()
 
 
 def plot_hist(out):
@@ -83,7 +88,8 @@ def plot_hist(out):
 def main(size):
     register_matplotlib_converters()
     l0 = creating_params(size)
-    plot_params(l0, bundled=True)
+    plot_params(l0)
+    plot_bundled(l0)
     # out = generalization.runs(l0)
     # print(out)
     # np.save('output_randomization', out)
