@@ -90,7 +90,7 @@ def main():
     if args.months:
         m = Mortgage(float(args.interest) / 100, float(args.months), args.amount, args.correction)
     else:
-        m = Mortgage(float(args.interest) / 100, float(args.years) * MONTHS_IN_YEAR, args.amount, args.correction)
+        m = Mortgage(float(args.interest) / 100, args.years * MONTHS_IN_YEAR, args.amount, args.correction)
 
     print_summary(m)
 
